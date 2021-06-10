@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -18,13 +19,13 @@ public class View extends JFrame {
     JPanel panel = new JPanel();
     panel.setBorder(BorderFactory.createEmptyBorder(10, 30, 10, 30));
     panel.setLayout(new GridBagLayout());
-    panel.setBackground(new Color(206, 200, 200));
+    panel.setBackground(new Color(219, 213, 213));
 
     Font fontBasic = new Font("Verdana", 1, 12);
-    Font fontBig = new Font("Verdana", 1, 15);
+    Font fontBig = new Font("Verdana", 1, 18);
 
     JLabel header = new JLabel("Car configuration");
-    header.setFont(new Font("Verdana", 1, 20));
+    header.setFont(new Font("Verdana", 1, 25));
     JLabel option = new JLabel("Option: ");
     option.setFont(fontBasic);
     JLabel modell = new JLabel("Modell: ");
@@ -45,8 +46,8 @@ public class View extends JFrame {
     JComboBox comboBoxSitze = new JComboBox(comboBoxListeSitze);
     JLabel preis = new JLabel("Preis: ");
     preis.setFont(fontBig);
-    JLabel preisErgebnis = new JLabel("");
-    preis.setFont(fontBig);
+    JLabel preisErgebnis = new JLabel("20.000");
+    preisErgebnis.setFont(fontBig);
 
     panel.add(header, this.createGridBagContraintsHeader());
     panel.add(option, this.createGridBagContraints(1,1));
@@ -65,7 +66,7 @@ public class View extends JFrame {
     this.add(panel, BorderLayout.CENTER);
     this.setTitle("Car configuration");
     this.pack();
-    this.setSize(300, 300);
+    this.setSize(500, 450);
     this.setVisible(true);
   }
 
@@ -81,6 +82,7 @@ public class View extends JFrame {
     c.fill = GridBagConstraints.HORIZONTAL;
     c.gridx = gridx;
     c.gridy = gridy;
+    c.insets= new Insets(10,15,12,15);
     return c;
   }
 }
