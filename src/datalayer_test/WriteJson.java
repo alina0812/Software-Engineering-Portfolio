@@ -48,7 +48,7 @@ public class WriteJson {
         modell_mercedes.add("price", 45000);
         modelle.add(modell_mercedes);   // Eintrag wird an das array angehängt
 
-        
+
         // Anlegen der einzelnen Objekte, jeder Motor mit Attributen: motor_id, name, price, kompitabel_mit
         JsonObjectBuilder motor_tdi = Json.createObjectBuilder(); //Eintrag für 2.0 TDI, soll Kompitabel mit Modell_ID 00 und 01 sein.
         motor_tdi.add("modell_id", 110);
