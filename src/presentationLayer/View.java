@@ -37,20 +37,16 @@ public class View extends JFrame {
     option.setFont(fontBasic);
     JLabel modell = new JLabel("Modell: ");
     modell.setFont(fontBasic);
-    String comboBoxListeModell[] = {null, "Audi", "Passat", "Opel"};        // Later on it should pick all options from the model
-    comboBoxModell = new JComboBox(comboBoxListeModell);        // empty Option is important to implement
+    comboBoxModell = new JComboBox();
     JLabel motor = new JLabel("Motor: ");
     motor.setFont(fontBasic);
-    String comboBoxListeMotor[] = {null, "Audi", "Passat", "Opel"};
-    comboBoxMotor = new JComboBox(comboBoxListeMotor);
+    comboBoxMotor = new JComboBox();
     JLabel getriebe = new JLabel("Getriebe: ");
     getriebe.setFont(fontBasic);
-    String comboBoxListeGetriebe[] = {null, "Audi", "Passat", "Opel"};
-    comboBoxGetriebe = new JComboBox(comboBoxListeGetriebe);
+    comboBoxGetriebe = new JComboBox();
     JLabel sitze = new JLabel("Sitze: ");
     sitze.setFont(fontBasic);
-    String comboBoxListeSitze[] = {null, "Audi", "Passat", "Opel"};
-    comboBoxSitze = new JComboBox(comboBoxListeSitze);
+    comboBoxSitze = new JComboBox();
     JLabel preis = new JLabel("Preis: ");
     preis.setFont(fontBig);
     preisErgebnis = new JLabel();
@@ -73,8 +69,7 @@ public class View extends JFrame {
     this.add(panel, BorderLayout.CENTER);
     this.setTitle("Car configuration");
     this.pack();
-    this.setSize(500, 450);
-    this.setVisible(true);
+    this.setSize(450, 450);
   }
 
   private GridBagConstraints createGridBagConstraintsHeader() {
@@ -125,6 +120,10 @@ public class View extends JFrame {
 
   public void removeItemComboBoxSitze(String sitze) {
     comboBoxSitze.addItem(sitze);
+  }
+
+  public void addItemComboBoxModell(String modell) {
+    comboBoxModell.addItem(modell);
   }
 
   public void addItemComboBoxMotor(String motor) {
