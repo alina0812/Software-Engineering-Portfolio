@@ -137,7 +137,7 @@ public class WriteJson {
         JsonObject jo = builder.build();      // Das JSON Objekt wird zur Datei
         //Die Datei wird unter dem Namen Testdatensatz.txt Gespeichert
         try {
-            FileWriter fw = new FileWriter("Testdatensatz3.txt");
+            FileWriter fw = new FileWriter("Testdatensatz3.json");
             JsonWriter jsonWriter = Json.createWriter(fw);
             jsonWriter.writeObject(jo);
             jsonWriter.close();
