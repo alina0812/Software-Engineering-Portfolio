@@ -33,7 +33,7 @@ public class ReadJson {
             JsonReader reader = Json.createReader(is);
             txtObject = reader.readObject();
             reader.close();
-            System.out.println(txtObject);
+            
         }catch (
                 FileNotFoundException e){
             e.printStackTrace();
