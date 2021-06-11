@@ -38,4 +38,51 @@ public class Model {
   public Configuration[] getSeats() {
     return seats;
   }
+
+
+  private String model;
+  private String engine;
+  private String gear;
+  private String seat;
+  private int price;
+
+  public String getModel() {
+    return model;
+  }
+
+  public void setModel(String model) {
+    this.model = model;
+  }
+
+  public String getEngine() {
+    return engine;
+  }
+
+  public void setEngine(String engine) {
+    this.engine = engine;
+  }
+
+  public String getGear() {
+    return gear;
+  }
+
+  public void setGear(String gear) {
+    this.gear = gear;
+  }
+
+  public String getSeat() {
+    return seat;
+  }
+
+  public void setSeat(String seat) {
+    this.seat = seat;
+  }
+
+  public int getPrice() {
+    return price;
+  }
+
+  public void setPrice(int price) {
+    this.price = price;
+  }
 }

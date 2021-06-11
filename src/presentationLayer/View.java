@@ -6,6 +6,8 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemListener;
 import java.text.NumberFormat;
 import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
@@ -148,5 +150,21 @@ public class View extends JFrame {
 
   public void setSelectedItemComboBoxSeats(String seats) {
     comboBoxSeats.setSelectedItem(seats);
+  }
+
+  public void addModelSelectionListener(ItemListener listenForComboBox) {
+    comboBoxModels.addItemListener(listenForComboBox);
+  }
+
+  public void addEngineSelectionListener(ItemListener listenForComboBox) {
+    comboBoxEngines.addItemListener(listenForComboBox);
+  }
+
+  public void addGearSelectionListener(ItemListener listenForComboBox) {
+    comboBoxGears.addItemListener(listenForComboBox);
+  }
+
+  public void addSeatsSelectionListener(ItemListener listenForComboBox) {
+    comboBoxSeats.addItemListener(listenForComboBox);
   }
 }
