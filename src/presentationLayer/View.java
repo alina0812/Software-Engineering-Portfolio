@@ -6,7 +6,6 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.event.ActionListener;
 import java.awt.event.ItemListener;
 import java.text.NumberFormat;
 import javax.swing.BorderFactory;
@@ -20,7 +19,7 @@ public class View extends JFrame {
   private final JLabel priceResult;
   private final JComboBox comboBoxModels;
   private final JComboBox comboBoxEngines;
-  private final JComboBox comboBoxGears;
+  private final JComboBox comboBoxTransmissions;
   private final JComboBox comboBoxSeats;
 
   public View() {
@@ -43,9 +42,9 @@ public class View extends JFrame {
     JLabel engine = new JLabel("Motor: ");
     engine.setFont(fontBasic);
     comboBoxEngines = new JComboBox();
-    JLabel gear = new JLabel("Getriebe: ");
-    gear.setFont(fontBasic);
-    comboBoxGears = new JComboBox();
+    JLabel transmission = new JLabel("Getriebe: ");
+    transmission.setFont(fontBasic);
+    comboBoxTransmissions = new JComboBox();
     JLabel seats = new JLabel("Sitze: ");
     seats.setFont(fontBasic);
     comboBoxSeats = new JComboBox();
@@ -60,8 +59,8 @@ public class View extends JFrame {
     panel.add(comboBoxModels, this.createGridBagConstraints(1, 2));
     panel.add(engine, this.createGridBagConstraints(0, 3));
     panel.add(comboBoxEngines, this.createGridBagConstraints(1, 3));
-    panel.add(gear, this.createGridBagConstraints(0, 4));
-    panel.add(comboBoxGears, this.createGridBagConstraints(1, 4));
+    panel.add(transmission, this.createGridBagConstraints(0, 4));
+    panel.add(comboBoxTransmissions, this.createGridBagConstraints(1, 4));
     panel.add(seats, this.createGridBagConstraints(0, 5));
     panel.add(comboBoxSeats, this.createGridBagConstraints(1, 5));
     panel.add(price, this.createGridBagConstraints(0, 6));
@@ -104,8 +103,8 @@ public class View extends JFrame {
     return (String) comboBoxEngines.getSelectedItem();
   }
 
-  public String getComboBoxGears() {
-    return (String) comboBoxGears.getSelectedItem();
+  public String getComboBoxTransmissions() {
+    return (String) comboBoxTransmissions.getSelectedItem();
   }
 
   public String getComboBoxSeats() {
@@ -116,8 +115,8 @@ public class View extends JFrame {
     comboBoxEngines.removeItem(engine);
   }
 
-  public void removeItemComboBoxGear(String gear) {
-    comboBoxGears.removeItem(gear);
+  public void removeItemComboBoxTransmission(String transmission) {
+    comboBoxTransmissions.removeItem(transmission);
   }
 
   public void removeItemComboBoxSeat(String seat) {
@@ -132,8 +131,8 @@ public class View extends JFrame {
     comboBoxEngines.addItem(engine);
   }
 
-  public void addItemComboBoxGear(String gear) {
-    comboBoxGears.addItem(gear);
+  public void addItemComboBoxTransmission(String transmission) {
+    comboBoxTransmissions.addItem(transmission);
   }
 
   public void addItemComboBoxSeats(String seats) {
@@ -144,8 +143,8 @@ public class View extends JFrame {
     comboBoxEngines.setSelectedItem(engine);
   }
 
-  public void setSelectedItemComboBoxGear(String gear) {
-    comboBoxGears.setSelectedItem(gear);
+  public void setSelectedItemComboBoxTransmission(String transmission) {
+    comboBoxTransmissions.setSelectedItem(transmission);
   }
 
   public void setSelectedItemComboBoxSeats(String seats) {
@@ -161,7 +160,7 @@ public class View extends JFrame {
   }
 
   public void addGearSelectionListener(ItemListener listenForComboBox) {
-    comboBoxGears.addItemListener(listenForComboBox);
+    comboBoxTransmissions.addItemListener(listenForComboBox);
   }
 
   public void addSeatsSelectionListener(ItemListener listenForComboBox) {

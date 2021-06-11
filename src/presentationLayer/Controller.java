@@ -12,21 +12,24 @@ public class Controller {
     this.view = view;
     this.model = model;
 
-    Configuration[] models = model.getModels();   // Later: ApplicationLayerClass.getModelle();
-    for (Configuration c : models) {
-      view.addItemComboBoxModel(c.getName());
+    //ApplicationLayerClass.getModels();
+    //this.updateComboBoxes;
+
+    String[] models = model.getModels();   // Later: ApplicationLayerClass.getModelle();
+    for (String m : models) {
+      view.addItemComboBoxModel(m);
     }
-    Configuration[] engines = model.getEngines(); // Later: this.updateComboBoxes();
-    for (Configuration c : engines) {             //
-      view.addItemComboBoxEngine(c.getName());    //
+    String[] engines = model.getEngines(); // Later: this.updateComboBoxes();
+    for (String e : engines) {             //
+      view.addItemComboBoxEngine(e);    //
     }
-    Configuration[] gears = model.getGears();     //
-    for (Configuration c : gears) {               //
-      view.addItemComboBoxGear(c.getName());      //
+    String[] transmissions = model.getTransmissions();     //
+    for (String t : transmissions) {               //
+      view.addItemComboBoxTransmission(t);      //
     }
-    Configuration[] seats = model.getSeats();     //
-    for (Configuration c : seats) {               //
-      view.addItemComboBoxSeats(c.getName());     //
+    String[] seats = model.getSeats();     //
+    for (String s : seats) {               //
+      view.addItemComboBoxSeats(s);     //
     }
     this.calculatePrice();
     view.setVisible(true);
@@ -92,7 +95,7 @@ public class Controller {
     @Override
     public void itemStateChanged(ItemEvent e) {
       if (e.getStateChange() == ItemEvent.SELECTED) {
-        model.setGear((String) e.getItem());
+        model.setTransmission((String) e.getItem());
         Controller.this.calculatePrice();
       }
     }
