@@ -1,1 +1,115 @@
-{"Modelle":[{"modell_id":100,"name":"Passat","price":20000},{"modell_id":101,"name":"Golf","price":10000},{"modell_id":102,"name":"Porsche","price":80000},{"modell_id":103,"name":"Mercedes","price":45000}],"Motoren":[{"modell_id":110,"name":"2.0 TDI","price":3000,"kompitabel_mit":[100,101]},{"modell_id":111,"name":"4.0 V8","price":8000,"kompitabel_mit":[103]},{"modell_id":112,"name":"3.5 Boxer","price":7000,"kompitabel_mit":[102]}],"Getriebe":[{"modell_id":120,"name":"Automatik","price":4000,"kompitabel_mit":[100,102,103]},{"modell_id":121,"name":"Handschaltung","price":2000,"kompitabel_mit":[100,101,102,103]},{"modell_id":122,"name":"Doppelkupplungsgetriebe","price":8000,"kompitabel_mit":[102,103]}],"Sitze":[{"modell_id":130,"name":"Stoffbezug","price":500,"kompitabel_mit":[100,101]},{"modell_id":131,"name":"Teilleder","price":1000,"kompitabel_mit":[100,101,102,103]},{"modell_id":132,"name":"Vollleder","price":500,"kompitabel_mit":[102,103]}]}
+
+{
+    "models": [
+        {
+            "model_id": 100,
+            "name": "Passat",
+            "price": 20000
+        },
+        {
+            "model_id": 101,
+            "name": "Golf",
+            "price": 10000
+        },
+        {
+            "model_id": 102,
+            "name": "Porsche",
+            "price": 80000
+        },
+        {
+            "model_id": 103,
+            "name": "Mercedes",
+            "price": 45000
+        }
+    ],
+    "engines": [
+        {
+            "model_id": 110,
+            "name": "2.0 TDI",
+            "price": 3000,
+            "compatible_with": [
+                100,
+                101
+            ]
+        },
+        {
+            "model_id": 111,
+            "name": "4.0 V8",
+            "price": 8000,
+            "compatible_with": [
+                103
+            ]
+        },
+        {
+            "model_id": 112,
+            "name": "3.5 Boxer",
+            "price": 7000,
+            "compatible_with": [
+                102
+            ]
+        }
+    ],
+    "transmissions": [
+        {
+            "model_id": 120,
+            "name": "Automatik",
+            "price": 4000,
+            "compatible_with": [
+                100,
+                102,
+                103
+            ]
+        },
+        {
+            "model_id": 121,
+            "name": "Handschaltung",
+            "price": 2000,
+            "compatible_with": [
+                100,
+                101,
+                102,
+                103
+            ]
+        },
+        {
+            "model_id": 122,
+            "name": "Doppelkupplungsgetriebe",
+            "price": 8000,
+            "compatible_with": [
+                102,
+                103
+            ]
+        }
+    ],
+    "seats": [
+        {
+            "model_id": 130,
+            "name": "Stoffbezug",
+            "price": 500,
+            "compatible_with": [
+                100,
+                101
+            ]
+        },
+        {
+            "model_id": 131,
+            "name": "Teilleder",
+            "price": 1000,
+            "compatible_with": [
+                100,
+                101,
+                102,
+                103
+            ]
+        },
+        {
+            "model_id": 132,
+            "name": "Vollleder",
+            "price": 500,
+            "compatible_with": [
+                102,
+                103
+            ]
+        }
+    ]
+}
