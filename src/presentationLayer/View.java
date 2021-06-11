@@ -15,11 +15,11 @@ import javax.swing.JPanel;
 
 public class View extends JFrame {
 
-  private final JLabel preisErgebnis;
-  private final JComboBox comboBoxModell;
-  private final JComboBox comboBoxMotor;
-  private final JComboBox comboBoxGetriebe;
-  private final JComboBox comboBoxSitze;
+  private final JLabel priceResult;
+  private final JComboBox comboBoxModels;
+  private final JComboBox comboBoxEngines;
+  private final JComboBox comboBoxGears;
+  private final JComboBox comboBoxSeats;
 
   public View() {
 
@@ -35,35 +35,35 @@ public class View extends JFrame {
     header.setFont(new Font("Verdana", 1, 25));
     JLabel option = new JLabel("Option: ");
     option.setFont(fontBasic);
-    JLabel modell = new JLabel("Modell: ");
-    modell.setFont(fontBasic);
-    comboBoxModell = new JComboBox();
-    JLabel motor = new JLabel("Motor: ");
-    motor.setFont(fontBasic);
-    comboBoxMotor = new JComboBox();
-    JLabel getriebe = new JLabel("Getriebe: ");
-    getriebe.setFont(fontBasic);
-    comboBoxGetriebe = new JComboBox();
-    JLabel sitze = new JLabel("Sitze: ");
-    sitze.setFont(fontBasic);
-    comboBoxSitze = new JComboBox();
-    JLabel preis = new JLabel("Preis: ");
-    preis.setFont(fontBig);
-    preisErgebnis = new JLabel();
-    preisErgebnis.setFont(fontBig);
+    JLabel model = new JLabel("Modell: ");
+    model.setFont(fontBasic);
+    comboBoxModels = new JComboBox();
+    JLabel engine = new JLabel("Motor: ");
+    engine.setFont(fontBasic);
+    comboBoxEngines = new JComboBox();
+    JLabel gear = new JLabel("Getriebe: ");
+    gear.setFont(fontBasic);
+    comboBoxGears = new JComboBox();
+    JLabel seats = new JLabel("Sitze: ");
+    seats.setFont(fontBasic);
+    comboBoxSeats = new JComboBox();
+    JLabel price = new JLabel("Preis: ");
+    price.setFont(fontBig);
+    priceResult = new JLabel();
+    priceResult.setFont(fontBig);
 
     panel.add(header, this.createGridBagConstraintsHeader());
     panel.add(option, this.createGridBagConstraints(1, 1));
-    panel.add(modell, this.createGridBagConstraints(0, 2));
-    panel.add(comboBoxModell, this.createGridBagConstraints(1, 2));
-    panel.add(motor, this.createGridBagConstraints(0, 3));
-    panel.add(comboBoxMotor, this.createGridBagConstraints(1, 3));
-    panel.add(getriebe, this.createGridBagConstraints(0, 4));
-    panel.add(comboBoxGetriebe, this.createGridBagConstraints(1, 4));
-    panel.add(sitze, this.createGridBagConstraints(0, 5));
-    panel.add(comboBoxSitze, this.createGridBagConstraints(1, 5));
-    panel.add(preis, this.createGridBagConstraints(0, 6));
-    panel.add(preisErgebnis, this.createGridBagConstraints(1, 6));
+    panel.add(model, this.createGridBagConstraints(0, 2));
+    panel.add(comboBoxModels, this.createGridBagConstraints(1, 2));
+    panel.add(engine, this.createGridBagConstraints(0, 3));
+    panel.add(comboBoxEngines, this.createGridBagConstraints(1, 3));
+    panel.add(gear, this.createGridBagConstraints(0, 4));
+    panel.add(comboBoxGears, this.createGridBagConstraints(1, 4));
+    panel.add(seats, this.createGridBagConstraints(0, 5));
+    panel.add(comboBoxSeats, this.createGridBagConstraints(1, 5));
+    panel.add(price, this.createGridBagConstraints(0, 6));
+    panel.add(priceResult, this.createGridBagConstraints(1, 6));
 
     this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     this.add(panel, BorderLayout.CENTER);
@@ -88,65 +88,65 @@ public class View extends JFrame {
     return c;
   }
 
-  public void setPreisErgebnis(int preis) {
+  public void setPriceResult(int price) {
     char c = 8364; //Ascii code
-    String s = String.valueOf(NumberFormat.getInstance().format(preis)); // Tausender-Punkt
-    preisErgebnis.setText(s + " " + c);
+    String s = String.valueOf(NumberFormat.getInstance().format(price)); // Tausender-Punkt
+    priceResult.setText(s + " " + c);
   }
 
-  public String getComboBoxModell() {
-    return (String) comboBoxModell.getSelectedItem();
+  public String getComboBoxModels() {
+    return (String) comboBoxModels.getSelectedItem();
   }
 
-  public String getComboBoxMotor() {
-    return (String) comboBoxMotor.getSelectedItem();
+  public String getComboBoxEngines() {
+    return (String) comboBoxEngines.getSelectedItem();
   }
 
-  public String getComboBoxGetriebe() {
-    return (String) comboBoxGetriebe.getSelectedItem();
+  public String getComboBoxGears() {
+    return (String) comboBoxGears.getSelectedItem();
   }
 
-  public String getComboBoxSitze() {
-    return (String) comboBoxSitze.getSelectedItem();
+  public String getComboBoxSeats() {
+    return (String) comboBoxSeats.getSelectedItem();
   }
 
-  public void removeItemComboBoxMotor(String motor) {
-    comboBoxMotor.removeItem(motor);
+  public void removeItemComboBoxEngine(String engine) {
+    comboBoxEngines.removeItem(engine);
   }
 
-  public void removeItemComboBoxGetriebe(String getriebe) {
-    comboBoxGetriebe.removeItem(getriebe);
+  public void removeItemComboBoxGear(String gear) {
+    comboBoxGears.removeItem(gear);
   }
 
-  public void removeItemComboBoxSitze(String sitze) {
-    comboBoxSitze.addItem(sitze);
+  public void removeItemComboBoxSeat(String seat) {
+    comboBoxSeats.addItem(seat);
   }
 
-  public void addItemComboBoxModell(String modell) {
-    comboBoxModell.addItem(modell);
+  public void addItemComboBoxModel(String model) {
+    comboBoxModels.addItem(model);
   }
 
-  public void addItemComboBoxMotor(String motor) {
-    comboBoxMotor.addItem(motor);
+  public void addItemComboBoxEngine(String engine) {
+    comboBoxEngines.addItem(engine);
   }
 
-  public void addItemComboBoxGetriebe(String getriebe) {
-    comboBoxGetriebe.addItem(getriebe);
+  public void addItemComboBoxGear(String gear) {
+    comboBoxGears.addItem(gear);
   }
 
-  public void addItemComboBoxSitze(String sitze) {
-    comboBoxSitze.addItem(sitze);
+  public void addItemComboBoxSeats(String seats) {
+    comboBoxSeats.addItem(seats);
   }
 
-  public void setSelectedItemComboBoxMotor(String motor) {
-    comboBoxMotor.setSelectedItem(motor);
+  public void setSelectedItemComboBoxEngine(String engine) {
+    comboBoxEngines.setSelectedItem(engine);
   }
 
-  public void setSelectedItemComboBoxGetriebe(String getriebe) {
-    comboBoxGetriebe.setSelectedItem(getriebe);
+  public void setSelectedItemComboBoxGear(String gear) {
+    comboBoxGears.setSelectedItem(gear);
   }
 
-  public void setSelectedItemComboBoxSitze(String sitze) {
-    comboBoxSitze.setSelectedItem(sitze);
+  public void setSelectedItemComboBoxSeats(String seats) {
+    comboBoxSeats.setSelectedItem(seats);
   }
 }

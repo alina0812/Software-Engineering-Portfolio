@@ -9,23 +9,23 @@ public class Controller {
     this.view = view;
     this.model = model;
 
-    Configuration[] modelle = model.getModelle();
-    for (Configuration c : modelle) {
-      view.addItemComboBoxModell(c.getName());
+    Configuration[] models = model.getModels(); // Later: ApplicationLayerClass.getModelle();
+    for (Configuration c : models) {
+      view.addItemComboBoxModel(c.getName());
     }
-    Configuration[] motoren = model.getMotoren();
-    for (Configuration c : motoren) {
-      view.addItemComboBoxMotor(c.getName());
+    Configuration[] engines = model.getEngines();
+    for (Configuration c : engines) {
+      view.addItemComboBoxEngine(c.getName());
     }
-    Configuration[] getriebe = model.getGetriebe();
-    for (Configuration c : getriebe) {
-      view.addItemComboBoxGetriebe(c.getName());
+    Configuration[] gears = model.getGears();
+    for (Configuration c : gears) {
+      view.addItemComboBoxGear(c.getName());
     }
-    Configuration[] sitze = model.getSitze();
-    for (Configuration c : sitze) {
-      view.addItemComboBoxSitze(c.getName());
+    Configuration[] seats = model.getSeats();
+    for (Configuration c : seats) {
+      view.addItemComboBoxSeats(c.getName());
     }
-    view.setPreisErgebnis(20000);
+    view.setPriceResult(20000);
     view.setVisible(true);
   }
 }

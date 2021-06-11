@@ -5,20 +5,20 @@ public class Configuration {
   private int id;
   private String name;
   private int price;
-  private int[] kompatibel_mit;
+  private int[] compatibleWith;
 
-  public Configuration(int id, String name, int price, int[] kompatibel_mit) {
+  public Configuration(int id, String name, int price, int[] compatibleWith) {
     this.id = id;
     this.name = name;
     this.price = price;
-    this.kompatibel_mit = kompatibel_mit;
+    this.compatibleWith = compatibleWith;
   }
 
   public Configuration(int id, String name, int price) {
     this.id = id;
     this.name = name;
     this.price = price;
-    this.kompatibel_mit = null;
+    this.compatibleWith = null;
   }
 
   public int getId() {
@@ -45,11 +45,11 @@ public class Configuration {
     this.price = price;
   }
 
-  public int[] getKompatibel_mit() {
-    return kompatibel_mit;
+  public int[] getCompatibleWith() {
+    return compatibleWith;
   }
 
-  public void setKompatibel_mit(int[] kompatibel_mit) {
-    this.kompatibel_mit = kompatibel_mit;
+  public void setCompatibleWith(int[] compatibleWith) {
+    this.compatibleWith = compatibleWith;
   }
 }
