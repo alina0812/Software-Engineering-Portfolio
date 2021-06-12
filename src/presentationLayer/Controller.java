@@ -2,35 +2,26 @@ package presentationLayer;
 
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import presentationLayer.Model.AvailableConfiguration;
+import presentationLayer.Model.SelectedConfiguration;
 
 public class Controller {
 
   private View view;
-  private Model model;
+  private AvailableConfiguration availableConfiguration;
+  private SelectedConfiguration selectedConfiguration;
 
-  public Controller(View view, Model model) {
+  public Controller(View view, AvailableConfiguration availableConfiguration, SelectedConfiguration selectedConfiguration) {
     this.view = view;
-    this.model = model;
+    this.availableConfiguration = availableConfiguration;
+    this.selectedConfiguration = selectedConfiguration;
+    availableConfiguration.addObserver(view);
+    selectedConfiguration.addObserver(view);
 
     //ApplicationLayerClass.getModels();
     //this.updateComboBoxes;
 
-    String[] models = model.getModels();   // Later: ApplicationLayerClass.getModelle();
-    for (String m : models) {
-      view.addItemComboBoxModel(m);
-    }
-    String[] engines = model.getEngines(); // Later: this.updateComboBoxes();
-    for (String e : engines) {             //
-      view.addItemComboBoxEngine(e);    //
-    }
-    String[] transmissions = model.getTransmissions();     //
-    for (String t : transmissions) {               //
-      view.addItemComboBoxTransmission(t);      //
-    }
-    String[] seats = model.getSeats();     //
-    for (String s : seats) {               //
-      view.addItemComboBoxSeats(s);     //
-    }
+    availableConfiguration.firstInit(); // remove Later
     this.calculatePrice();
     view.setVisible(true);
 
@@ -45,8 +36,7 @@ public class Controller {
     int p = 0;                              // this as well
 
     //int p = ApplicationLayerClass.calculatePrice(model.getModel(), model.getEngine(), model.getGear(), model.getSeat());
-    model.setPrice(p);
-    view.setPriceResult(model.getPrice());
+    selectedConfiguration.setPrice(p);
   }
 
   private void updateComboBoxes(String model) {
@@ -70,10 +60,9 @@ public class Controller {
     @Override
     public void itemStateChanged(ItemEvent e) {
       if (e.getStateChange() == ItemEvent.SELECTED) {
-        model.setModel((String) e.getItem());
-        System.out.println(model.getModel());
-        Controller.this.calculatePrice();
+        selectedConfiguration.setModel((String) e.getItem());
         Controller.this.updateComboBoxes((String) e.getItem());
+        Controller.this.calculatePrice();
       }
     }
   }
@@ -83,8 +72,7 @@ public class Controller {
     @Override
     public void itemStateChanged(ItemEvent e) {
       if (e.getStateChange() == ItemEvent.SELECTED) {
-        model.setEngine((String) e.getItem());
-        System.out.println(model.getEngine());
+        selectedConfiguration.setEngine((String) e.getItem());
         Controller.this.calculatePrice();
       }
     }
@@ -95,7 +83,7 @@ public class Controller {
     @Override
     public void itemStateChanged(ItemEvent e) {
       if (e.getStateChange() == ItemEvent.SELECTED) {
-        model.setTransmission((String) e.getItem());
+        selectedConfiguration.setTransmission((String) e.getItem());
         Controller.this.calculatePrice();
       }
     }
@@ -106,7 +94,7 @@ public class Controller {
     @Override
     public void itemStateChanged(ItemEvent e) {
       if (e.getStateChange() == ItemEvent.SELECTED) {
-        model.setSeat((String) e.getItem());
+        selectedConfiguration.setSeat((String) e.getItem());
         Controller.this.calculatePrice();
       }
     }

@@ -8,13 +8,17 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ItemListener;
 import java.text.NumberFormat;
+import java.util.Observable;
+import java.util.Observer;
 import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import presentationLayer.Model.AvailableConfiguration;
+import presentationLayer.Model.SelectedConfiguration;
 
-public class View extends JFrame {
+public class View extends JFrame implements Observer {
 
   private final JLabel priceResult;
   private final JComboBox comboBoxModels;
@@ -165,5 +169,32 @@ public class View extends JFrame {
 
   public void addSeatsSelectionListener(ItemListener listenForComboBox) {
     comboBoxSeats.addItemListener(listenForComboBox);
+  }
+
+  @Override
+  public void update(Observable o, Object arg) {
+    System.out.println("Observer reached");
+    if (o instanceof AvailableConfiguration) {
+      System.out.println("Arg is AvailableConfiguration");
+      String[] models = ((AvailableConfiguration) arg).getModels();
+      for (String m : models) {
+        this.addItemComboBoxModel(m);
+      }
+      String[] engines = ((AvailableConfiguration) arg).getEngines();
+      for (String e : engines) {
+        this.addItemComboBoxEngine(e);
+      }
+      String[] transmissions = ((AvailableConfiguration) arg).getTransmissions();
+      for (String t : transmissions) {
+        this.addItemComboBoxTransmission(t);
+      }
+      String[] seats = ((AvailableConfiguration) arg).getSeats();
+      for (String s : seats) {
+        this.addItemComboBoxSeats(s);
+      }
+    } else if (o instanceof SelectedConfiguration) {
+      System.out.println("Preis eintragen");
+      this.setPriceResult(((SelectedConfiguration) arg).getPrice());
+    }
   }
 }

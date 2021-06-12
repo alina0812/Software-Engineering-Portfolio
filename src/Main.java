@@ -1,6 +1,7 @@
 import datalayer_test.ReadJson;
 import presentationLayer.Controller;
-import presentationLayer.Model;
+import presentationLayer.Model.AvailableConfiguration;
+import presentationLayer.Model.SelectedConfiguration;
 import presentationLayer.View;
 
 public class Main {
@@ -9,8 +10,9 @@ public class Main {
     System.out.println(add(2, 5));
 
     View view = new View();
-    Model model = new Model();
-    Controller controller = new Controller(view, model);
+    AvailableConfiguration availableConfiguration = new AvailableConfiguration();
+    SelectedConfiguration selectedConfiguration = new SelectedConfiguration();
+    Controller controller = new Controller(view, availableConfiguration, selectedConfiguration);
 
     ReadJson.load_data(); // loads data from JSON File
     System.out.println(ReadJson.getModels());
