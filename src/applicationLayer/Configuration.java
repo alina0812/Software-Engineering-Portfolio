@@ -26,7 +26,7 @@ public class Configuration {
     return transmissions;
   }
 
-  public String[] seats() {
+  public String[] getSeats() {
     return seats;
   }
 }
