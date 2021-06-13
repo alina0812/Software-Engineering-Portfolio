@@ -1,30 +1,37 @@
 package presentationLayer;
 
+import static java.awt.Font.BOLD;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ItemListener;
 import java.text.NumberFormat;
+import java.util.Objects;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.ListCellRenderer;
+import javax.swing.plaf.basic.BasicComboPopup;
 import presentationLayer.Model.AvailableConfiguration;
 import presentationLayer.Model.SelectedConfiguration;
 
 public class View extends JFrame implements Observer {
 
   private final JLabel priceResult;
-  private final JComboBox comboBoxModels;
-  private final JComboBox comboBoxEngines;
-  private final JComboBox comboBoxTransmissions;
-  private final JComboBox comboBoxSeats;
+  private final JComboBox<String> comboBoxModels;
+  private final JComboBox<String> comboBoxEngines;
+  private final JComboBox<String> comboBoxTransmissions;
+  private final JComboBox<String> comboBoxSeats;
 
   public View() {
 
@@ -33,29 +40,44 @@ public class View extends JFrame implements Observer {
     panel.setLayout(new GridBagLayout());
     panel.setBackground(new Color(219, 213, 213));
 
-    Font fontBasic = new Font("Verdana", 1, 13);
-    Font fontBig = new Font("Verdana", 1, 18);
-
     JLabel header = new JLabel("Car configuration");
-    header.setFont(new Font("Verdana", 1, 25));
+    header.setFont(new Font("Verdana", BOLD, 25));
+
+    Font fontBasic = new Font("Verdana", BOLD, 13);
     JLabel option = new JLabel("Option: ");
     option.setFont(fontBasic);
     JLabel model = new JLabel("Modell: ");
     model.setFont(fontBasic);
-    comboBoxModels = new JComboBox();
+    comboBoxModels = new JComboBox<>();
     JLabel engine = new JLabel("Motor: ");
     engine.setFont(fontBasic);
-    comboBoxEngines = new JComboBox();
+    comboBoxEngines = new JComboBox<>();
+    comboBoxEngines.setRenderer(new MyCellRenderer());
     JLabel transmission = new JLabel("Getriebe: ");
     transmission.setFont(fontBasic);
-    comboBoxTransmissions = new JComboBox();
+    comboBoxTransmissions = new JComboBox<>();
+    comboBoxTransmissions.setRenderer(new MyCellRenderer());
     JLabel seats = new JLabel("Sitze: ");
     seats.setFont(fontBasic);
-    comboBoxSeats = new JComboBox();
+    comboBoxSeats = new JComboBox<>();
+    comboBoxSeats.setRenderer(new MyCellRenderer());
+
+    Font fontBig = new Font("Verdana", BOLD, 18);
     JLabel price = new JLabel("Preis: ");
     price.setFont(fontBig);
     priceResult = new JLabel();
     priceResult.setFont(fontBig);
+
+    // Colour for pop-up menu
+    Color c = new Color(129, 177, 177, 176);
+    BasicComboPopup popup = (BasicComboPopup) comboBoxModels.getAccessibleContext().getAccessibleChild(0);
+    popup.getList().setSelectionBackground(c);
+    BasicComboPopup popup2 = (BasicComboPopup) comboBoxEngines.getAccessibleContext().getAccessibleChild(0);
+    popup2.getList().setSelectionBackground(c);
+    BasicComboPopup popup3 = (BasicComboPopup) comboBoxTransmissions.getAccessibleContext().getAccessibleChild(0);
+    popup3.getList().setSelectionBackground(c);
+    BasicComboPopup popup4 = (BasicComboPopup) comboBoxSeats.getAccessibleContext().getAccessibleChild(0);
+    popup4.getList().setSelectionBackground(c);
 
     panel.add(header, this.createGridBagConstraintsHeader());
     panel.add(option, this.createGridBagConstraints(1, 1));
@@ -93,67 +115,35 @@ public class View extends JFrame implements Observer {
     return c;
   }
 
-  public void setPriceResult(int price) {
-    char c = 8364; //Ascii code
-    String s = String.valueOf(NumberFormat.getInstance().format(price)); // Tausender-Punkt
-    priceResult.setText(s + " " + c);
+  public void setPriceResult(Integer price) {
+    if (price != null) {
+      char c = 8364; //Ascii code
+      String s = NumberFormat.getInstance().format(price); // Tausender-Punkt
+      priceResult.setText(s + " " + c);
+    } else if (!priceResult.getText().equals("")) {
+      priceResult.setText("");
+    }
   }
 
-  public String getComboBoxModels() {
-    return (String) comboBoxModels.getSelectedItem();
+  public boolean areAllComboBoxesFilled() {
+    return comboBoxModels.getItemCount() != 0 && !Objects.equals(comboBoxModels.getSelectedItem(), "")
+        && comboBoxEngines.getItemCount() != 0 && !Objects.equals(comboBoxEngines.getSelectedItem(), "")
+        && comboBoxTransmissions.getItemCount() != 0 && !Objects.equals(comboBoxTransmissions.getSelectedItem(), "")
+        && comboBoxSeats.getItemCount() != 0 && !Objects.equals(comboBoxSeats.getSelectedItem(), "");
   }
 
-  public String getComboBoxEngines() {
-    return (String) comboBoxEngines.getSelectedItem();
+  public void setDefaultBackgroundComboBoxEngines() {
+    this.comboBoxEngines.setBackground(comboBoxModels.getBackground()); //default color
   }
 
-  public String getComboBoxTransmissions() {
-    return (String) comboBoxTransmissions.getSelectedItem();
+  public void setDefaultBackgroundComboBoxTransmissions() {
+    this.comboBoxTransmissions.setBackground(comboBoxModels.getBackground()); //default color
   }
 
-  public String getComboBoxSeats() {
-    return (String) comboBoxSeats.getSelectedItem();
+  public void setDefaultBackgroundComboBoxSeats() {
+    this.comboBoxSeats.setBackground(comboBoxModels.getBackground()); //default color
   }
 
-  public void removeItemComboBoxEngine(String engine) {
-    comboBoxEngines.removeItem(engine);
-  }
-
-  public void removeItemComboBoxTransmission(String transmission) {
-    comboBoxTransmissions.removeItem(transmission);
-  }
-
-  public void removeItemComboBoxSeat(String seat) {
-    comboBoxSeats.addItem(seat);
-  }
-
-  public void addItemComboBoxModel(String model) {
-    comboBoxModels.addItem(model);
-  }
-
-  public void addItemComboBoxEngine(String engine) {
-    comboBoxEngines.addItem(engine);
-  }
-
-  public void addItemComboBoxTransmission(String transmission) {
-    comboBoxTransmissions.addItem(transmission);
-  }
-
-  public void addItemComboBoxSeats(String seats) {
-    comboBoxSeats.addItem(seats);
-  }
-
-  public void setSelectedItemComboBoxEngine(String engine) {
-    comboBoxEngines.setSelectedItem(engine);
-  }
-
-  public void setSelectedItemComboBoxTransmission(String transmission) {
-    comboBoxTransmissions.setSelectedItem(transmission);
-  }
-
-  public void setSelectedItemComboBoxSeats(String seats) {
-    comboBoxSeats.setSelectedItem(seats);
-  }
 
   public void addModelSelectionListener(ItemListener listenForComboBox) {
     comboBoxModels.addItemListener(listenForComboBox);
@@ -174,27 +164,101 @@ public class View extends JFrame implements Observer {
   @Override
   public void update(Observable o, Object arg) {
     System.out.println("Observer reached");
+    // ComboBoxes
     if (o instanceof AvailableConfiguration) {
       System.out.println("Arg is AvailableConfiguration");
-      String[] models = ((AvailableConfiguration) arg).getModels();
-      for (String m : models) {
-        this.addItemComboBoxModel(m);
+      if (this.comboBoxModels.getItemCount() == 0) {            // --> All Boxes are still empty
+        // Setup ComboBoxes
+        String[] models = ((AvailableConfiguration) arg).getModels();
+        for (String m : models) {
+          this.comboBoxModels.addItem(m);
+        }
+        // Update ComboBoxes
+      } else {
+        System.out.println("update ComboBoxes in view");
+
+        String selectedEngine = (String) comboBoxEngines.getSelectedItem();
+        String selectedTransmission = (String) comboBoxTransmissions.getSelectedItem();
+        String selectedSeats = (String) comboBoxSeats.getSelectedItem();
+
+
+        comboBoxEngines.removeAllItems();
+        comboBoxTransmissions.removeAllItems();
+        comboBoxSeats.removeAllItems();
+
+        String[] engines = ((AvailableConfiguration) arg).getEngines();
+        String currentSelectedEngine = null;
+        comboBoxEngines.addItem("");
+        for (String e : engines) {
+          this.comboBoxEngines.addItem(e);
+          if (selectedEngine != null && selectedEngine.equals(e)) {
+            currentSelectedEngine = e;
+          }
+        }
+        if (currentSelectedEngine != null) {
+          comboBoxEngines.setSelectedItem(currentSelectedEngine);
+        } else if (!Objects.equals(selectedEngine, "")) {
+          comboBoxEngines.setBackground(new Color(217, 50, 50, 163));
+        }
+        String[] transmissions = ((AvailableConfiguration) arg).getTransmissions();
+        String currentSelectedTransmission = null;
+        comboBoxTransmissions.addItem("");
+        for (String t : transmissions) {
+          this.comboBoxTransmissions.addItem(t);
+          if (selectedTransmission != null && selectedTransmission.equals(t)) {
+            currentSelectedTransmission = t;
+          }
+        }
+        if (currentSelectedTransmission != null) {
+          comboBoxTransmissions.setSelectedItem(currentSelectedTransmission);
+        } else if (!Objects.equals(selectedTransmission, "")) {
+          comboBoxTransmissions.setBackground(new Color(217, 50, 50, 163));
+        }
+        String[] seats = ((AvailableConfiguration) arg).getSeats();
+        String currentSelectedSeat = null;
+        comboBoxSeats.addItem("");
+        for (String s : seats) {
+          this.comboBoxSeats.addItem(s);
+          if (selectedSeats != null && selectedSeats.equals(s)) {
+            currentSelectedSeat = s;
+          }
+        }
+        if (currentSelectedSeat != null) {
+          comboBoxSeats.setSelectedItem(currentSelectedSeat);
+        } else if (!Objects.equals(selectedSeats, "")) {
+          comboBoxSeats.setBackground(new Color(217, 50, 50, 163));
+        }
+
       }
-      String[] engines = ((AvailableConfiguration) arg).getEngines();
-      for (String e : engines) {
-        this.addItemComboBoxEngine(e);
-      }
-      String[] transmissions = ((AvailableConfiguration) arg).getTransmissions();
-      for (String t : transmissions) {
-        this.addItemComboBoxTransmission(t);
-      }
-      String[] seats = ((AvailableConfiguration) arg).getSeats();
-      for (String s : seats) {
-        this.addItemComboBoxSeats(s);
-      }
+      // Update Price
     } else if (o instanceof SelectedConfiguration) {
       System.out.println("Preis eintragen");
       this.setPriceResult(((SelectedConfiguration) arg).getPrice());
+    }
+  }
+
+  class MyCellRenderer extends JLabel implements ListCellRenderer<Object> {
+    public MyCellRenderer() {
+      setOpaque(true);
+    }
+
+    @Override
+    public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+      setText(value.toString());
+      Color background = Color.WHITE;
+      Color foreground = Color.BLACK;
+
+      JList.DropLocation dropLocation = list.getDropLocation();
+
+      if (isSelected && !(dropLocation != null && !dropLocation.isInsert() && dropLocation.getIndex() == index)) {
+        background = new Color(129, 177, 177, 176);
+        foreground = Color.BLACK;
+      }
+
+      setBackground(background);
+      setForeground(foreground);
+
+      return this;
     }
   }
 }

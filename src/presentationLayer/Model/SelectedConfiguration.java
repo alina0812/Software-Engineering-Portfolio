@@ -8,7 +8,7 @@ public class SelectedConfiguration  extends Observable {
   private String engine;
   private String transmission;
   private String seat;
-  private int price;
+  private Integer price;
 
   public String getModel() {
     return model;
@@ -42,11 +42,11 @@ public class SelectedConfiguration  extends Observable {
     this.seat = seat;
   }
 
-  public int getPrice() {
+  public Integer getPrice() {
     return price;
   }
 
-  public void setPrice(int price) {
+  public void setPrice(Integer price) {
     this.price = price;
     this.setChanged();
     this.notifyObservers(this);
