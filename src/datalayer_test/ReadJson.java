@@ -46,6 +46,7 @@ public class ReadJson {
     }
 
     public static List<Model> getModels(){
+        models.clear();
         JsonArray models_json = txtObject.getJsonArray("models");
         for (int i = 0; i < models_json.size(); i++) {
             Model model = new Model();
@@ -60,6 +61,7 @@ public class ReadJson {
     }
 
     public static List<Engine> getEngines(){
+        engines.clear();
         JsonArray engines_json = txtObject.getJsonArray("engines");
         for (int i = 0; i < engines_json.size(); i++) {
             Engine engine = new Engine();
@@ -75,6 +77,7 @@ public class ReadJson {
     }
 
     public static List<Transmission> getTransmissions(){
+        transmissions.clear();
         JsonArray transmissions_json = txtObject.getJsonArray("transmissions");
         for (int i = 0; i < transmissions_json.size(); i++) {
             Transmission transmission = new Transmission();
@@ -90,7 +93,7 @@ public class ReadJson {
     }
 
     public static List<Seat> getSeats(){
-
+        seats.clear();
         JsonArray seats_json = txtObject.getJsonArray("seats");
         for (int i = 0; i < seats_json.size(); i++) {
             Seat seat = new Seat();

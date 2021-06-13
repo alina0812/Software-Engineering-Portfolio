@@ -1,3 +1,4 @@
+import applicationLayer.GetConfiguration;
 import datalayer_test.ReadJson;
 import presentationLayer.Controller;
 import presentationLayer.Model.AvailableConfiguration;
@@ -18,6 +19,8 @@ public class Main {
     System.out.println(ReadJson.getEngines());
     System.out.println(ReadJson.getTransmissions());
     System.out.println(ReadJson.getSeats());
+    GetConfiguration.getConfiguration();
+    GetConfiguration.getSubConfiguration("Golf");
 
   }
 }
