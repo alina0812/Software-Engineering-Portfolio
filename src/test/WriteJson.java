@@ -1,4 +1,4 @@
-package datalayer_test;
+package test;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -140,7 +140,7 @@ public class WriteJson {
             config.put(JsonGenerator.PRETTY_PRINTING, true);
             JsonWriterFactory writerFactory = Json.createWriterFactory(config);
 
-            FileWriter fw = new FileWriter("Testdatensatz3.json");
+            FileWriter fw = new FileWriter("Data.json");
             JsonWriter jsonWriter = writerFactory.createWriter(fw);
             jsonWriter.writeObject(jo);
             jsonWriter.close();

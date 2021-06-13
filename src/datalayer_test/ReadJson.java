@@ -23,8 +23,13 @@ public class ReadJson {
     private static List<Seat> seats = new ArrayList<>();
 
 
+    private ReadJson(){
+        // no instance of ReadJson should ever be created
+    }
+
+
     public static void load_data(){
-        File jsonInputFile = new File("Testdatensatz3.json");
+        File jsonInputFile = new File("Data.json");
         InputStream is;
 
         try{
