@@ -1,5 +1,6 @@
 package presentationLayer;
 
+import applicationLayer.Configuration;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import presentationLayer.Model.AvailableConfiguration;
@@ -25,9 +26,15 @@ public class Controller {
     this.view.addSeatsSelectionListener(new SeatsComboBoxListener());
 
     //models = ApplicationLayerClass.getModels();
-    String[] models = new String[] {"Passat", "Golf", "Porsche", "Mercedes"}; //remove later
+    
+    //remove later
+    Configuration configuration = new Configuration(
+        new String[] {"Passat", "Golf", "Porsche", "Mercedes"},
+        new String[] {"Engine1", "Engine2"},
+        new String[] {"Transmission1", "Transmission2"},
+        new String[] {"Seats1", "Seats2", "Seats3"});
 
-    availableConfiguration.init(models);
+    availableConfiguration.init(configuration.getModels(), configuration.getEngines(), configuration.getTransmissions(), configuration.getSeats());
     view.setDefaultBackgroundComboBoxEngines();
     view.setDefaultBackgroundComboBoxTransmissions();
     view.setDefaultBackgroundComboBoxSeats();
@@ -57,8 +64,12 @@ public class Controller {
     //remove this later
     if (model.equals("Passat")) {
       availableConfiguration.update(new String[] {"fd", "eg", "yb"}, new String[] {"ebsw", "d"}, new String[] {"eg", "egwe", "h", "egws"});
+    } else if (model.equals("")) {
+      availableConfiguration.update(new String[] {"Engine1", "Engine2"},
+          new String[] {"Transmission1", "Transmission2"},
+          new String[] {"Seats1", "Seats2", "Seats3"});
     } else {
-      availableConfiguration.update(new String[] {"a", "b", "c"}, new String[] {"d", "e"}, new String[] {"r", "h", "ege"});
+      availableConfiguration.update(new String[] {"a", "b", "c"}, new String[] {"Transmission1", "e"}, new String[] {"r", "h", "ege"});
     }
   }
 
@@ -74,7 +85,7 @@ public class Controller {
         Controller.this.updateComboBoxes((String) e.getItem());
         if (view.areAllComboBoxesFilled()) {
           Controller.this.calculatePrice();
-        } else {
+        } else if (selectedConfiguration.getPrice() != null) {
           selectedConfiguration.setPrice(null);
         }
       }
@@ -90,7 +101,7 @@ public class Controller {
         view.setDefaultBackgroundComboBoxEngines();
         if (view.areAllComboBoxesFilled()) {
           Controller.this.calculatePrice();
-        } else {
+        } else if (selectedConfiguration.getPrice() != null) {
           selectedConfiguration.setPrice(null);
         }
       }
@@ -106,7 +117,7 @@ public class Controller {
         view.setDefaultBackgroundComboBoxTransmissions();
         if (view.areAllComboBoxesFilled()) {
           Controller.this.calculatePrice();
-        } else {
+        } else if (selectedConfiguration.getPrice() != null) {
           selectedConfiguration.setPrice(null);
         }
       }
@@ -122,7 +133,7 @@ public class Controller {
         view.setDefaultBackgroundComboBoxSeats();
         if (view.areAllComboBoxesFilled()) {
           Controller.this.calculatePrice();
-        } else {
+        } else if (selectedConfiguration.getPrice() != null) {
           selectedConfiguration.setPrice(null);
         }
       }

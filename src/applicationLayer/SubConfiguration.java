@@ -20,7 +20,7 @@ public class SubConfiguration {
     return transmissions;
   }
 
-  public String[] seats() {
+  public String[] getSeats() {
     return seats;
   }
 }

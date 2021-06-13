@@ -170,10 +170,11 @@ public class View extends JFrame implements Observer {
       if (this.comboBoxModels.getItemCount() == 0) {            // --> All Boxes are still empty
         // Setup ComboBoxes
         String[] models = ((AvailableConfiguration) arg).getModels();
+        this.comboBoxModels.addItem("");
         for (String m : models) {
           this.comboBoxModels.addItem(m);
         }
-        // Update ComboBoxes
+        //Update ComboBoxes
       } else {
         System.out.println("update ComboBoxes in view");
 
@@ -188,7 +189,7 @@ public class View extends JFrame implements Observer {
 
         String[] engines = ((AvailableConfiguration) arg).getEngines();
         String currentSelectedEngine = null;
-        comboBoxEngines.addItem("");
+        this.comboBoxEngines.addItem("");
         for (String e : engines) {
           this.comboBoxEngines.addItem(e);
           if (selectedEngine != null && selectedEngine.equals(e)) {
@@ -197,7 +198,7 @@ public class View extends JFrame implements Observer {
         }
         if (currentSelectedEngine != null) {
           comboBoxEngines.setSelectedItem(currentSelectedEngine);
-        } else if (!Objects.equals(selectedEngine, "")) {
+        } else if (!Objects.equals(selectedEngine, "") && !Objects.equals(comboBoxModels.getSelectedItem(), "")) {
           comboBoxEngines.setBackground(new Color(217, 50, 50, 163));
         }
         String[] transmissions = ((AvailableConfiguration) arg).getTransmissions();
@@ -211,7 +212,7 @@ public class View extends JFrame implements Observer {
         }
         if (currentSelectedTransmission != null) {
           comboBoxTransmissions.setSelectedItem(currentSelectedTransmission);
-        } else if (!Objects.equals(selectedTransmission, "")) {
+        } else if (!Objects.equals(selectedTransmission, "") && !Objects.equals(comboBoxModels.getSelectedItem(), "")) {
           comboBoxTransmissions.setBackground(new Color(217, 50, 50, 163));
         }
         String[] seats = ((AvailableConfiguration) arg).getSeats();
@@ -225,7 +226,7 @@ public class View extends JFrame implements Observer {
         }
         if (currentSelectedSeat != null) {
           comboBoxSeats.setSelectedItem(currentSelectedSeat);
-        } else if (!Objects.equals(selectedSeats, "")) {
+        } else if (!Objects.equals(selectedSeats, "") && !Objects.equals(comboBoxModels.getSelectedItem(), "")) {
           comboBoxSeats.setBackground(new Color(217, 50, 50, 163));
         }
 
@@ -244,19 +245,25 @@ public class View extends JFrame implements Observer {
 
     @Override
     public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+
+      // Empty string would be ignored --> replace with empty ascii character
+      if(value.toString().equals("")) {
+        char c = 0;
+        value = Character.toString(c);
+      }
+
+
+      // background color overwrites background of comboBox
       setText(value.toString());
       Color background = Color.WHITE;
-      Color foreground = Color.BLACK;
 
       JList.DropLocation dropLocation = list.getDropLocation();
 
       if (isSelected && !(dropLocation != null && !dropLocation.isInsert() && dropLocation.getIndex() == index)) {
         background = new Color(129, 177, 177, 176);
-        foreground = Color.BLACK;
       }
 
       setBackground(background);
-      setForeground(foreground);
 
       return this;
     }

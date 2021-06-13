@@ -9,8 +9,11 @@ public class AvailableConfiguration extends Observable {
   private String[] transmissions;
   private String[] seats;
 
-  public void init(String[] models) {
+  public void init(String[] models, String[] engines, String[] transmissions, String[] seats) {
     this.models = models;
+    this.engines = engines;
+    this.transmissions = transmissions;
+    this.seats = seats;
     this.setChanged();
     this.notifyObservers(this);
   }
