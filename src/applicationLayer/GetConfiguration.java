@@ -2,6 +2,7 @@ package applicationLayer;
 
 import datalayer_test.*;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -57,52 +58,31 @@ public class GetConfiguration {
   }
 
 
-  public static SubConfiguration getSubConfiguration(String model) {
+  public static SubConfiguration getConfiguration(String model) {
     //TODO: Singelton pattern
     List<Model> modelList = ReadJson.getModels();
     List<Engine> engineList = ReadJson.getEngines();
     List<Transmission> transmissionList = ReadJson.getTransmissions();
     List<Seat> seatList = ReadJson.getSeats();
+    List<String> compatible = new ArrayList<>();
 
-    String[] engines = new String[engineList.size()];
-    String[] transmissions = new String[transmissionList.size()];
-    String[] seats = new String[seatList.size()];
 
     if (model == null || model.equals("")) {
-      int counter = 0;
-      Iterator iEngine = engineList.iterator();
-      while (iEngine.hasNext()) {
-        Engine engine = (Engine) iEngine.next();
-        engines[counter] = engine.getName();
-        counter++;
-      }
-      counter = 0;
-      Iterator iTransmission = transmissionList.iterator();
-      while (iTransmission.hasNext()) {
-        Transmission transmission = (Transmission) iTransmission.next();
-        transmissions[counter] = transmission.getName();
-        counter++;
-      }
-      counter = 0;
-      Iterator iSeat = seatList.iterator();
-      while (iSeat.hasNext()) {
-        Seat seat = (Seat) iSeat.next();
-        seats[counter] = seat.getName();
-        counter++;
-      }
+      Configuration config = GetConfiguration.getConfiguration();
+      String[] config_engines = config.getEngines();
+      String[] config_transmissions = config.getTransmissions();
+      String[] config_seats = config.getSeats();
+      SubConfiguration subConfig = new SubConfiguration(config_engines, config_transmissions, config_seats);
 
-      SubConfiguration subConfig = new SubConfiguration(engines, transmissions, seats);
       return subConfig;
     } else {
 
       int modelId = 0;
       int counter = 0;
       for (Model m : modelList) {
-
         if (model.equals(m.getName())) {
           modelId = m.getModel_id();
         }
-
       }
 
       if (modelId == 0) {
@@ -116,13 +96,12 @@ public class GetConfiguration {
         int[] compatible_with = engine.getCompatible_with();
         for (int i : compatible_with) {
           if (i == modelId) {
-            engines[counter] = engine.getName();
-            System.out.println(engines[counter]);
-            counter++;
+            compatible.add(engine.getName());
           }
         }
       }
-      counter = 0;
+      String[] engines = compatible.toArray(new String[0]);
+      compatible.clear();
 
       Iterator iTransmission = transmissionList.iterator();
       while (iTransmission.hasNext()) {
@@ -130,13 +109,12 @@ public class GetConfiguration {
         int[] compatible_with = transmission.getCompatible_with();
         for (int i : compatible_with) {
           if (i == modelId) {
-            transmissions[counter] = transmission.getName();
-            System.out.println(transmissions[counter]);
-            counter++;
+            compatible.add(transmission.getName());
           }
         }
       }
-      counter = 0;
+    String[] transmissions = compatible.toArray(new String[0]);
+    compatible.clear();
 
       Iterator iSeat = seatList.iterator();
       while (iSeat.hasNext()) {
@@ -144,14 +122,15 @@ public class GetConfiguration {
         int[] compatible_with = seat.getCompatible_with();
         for (int i : compatible_with) {
           if (i == modelId) {
-            seats[counter] = seat.getName();
-            System.out.println(seats[counter]);
-            counter++;
+            compatible.add(seat.getName());
           }
         }
       }
-      SubConfiguration subConfig = new SubConfiguration(engines, transmissions, seats);
-      return subConfig;
+    String[] seats = compatible.toArray(new String[0]);
+    compatible.clear();
+
+    SubConfiguration subConfig = new SubConfiguration(engines, transmissions, seats);
+    return subConfig;
     }
   }
 }

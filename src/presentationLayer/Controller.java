@@ -56,7 +56,7 @@ public class Controller {
 
     //availableConfiguration.update(configuration.getModels(), configuration.getEngines(), configuration.getTransmissions(), configuration.getSeats);
 
-    SubConfiguration subConfiguration = GetConfiguration.getSubConfiguration(model);
+    SubConfiguration subConfiguration = GetConfiguration.getConfiguration(model);
 
     availableConfiguration.update(subConfiguration.getEngines(), subConfiguration.getTransmissions(), subConfiguration.getSeats());
   }
