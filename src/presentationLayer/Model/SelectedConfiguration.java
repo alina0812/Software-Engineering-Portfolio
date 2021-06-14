@@ -7,7 +7,7 @@ public class SelectedConfiguration  extends Observable {
   private String model;
   private String engine;
   private String transmission;
-  private String seat;
+  private String seats;
   private Integer price;
 
   public String getModel() {
@@ -34,12 +34,12 @@ public class SelectedConfiguration  extends Observable {
     this.transmission = transmission;
   }
 
-  public String getSeat() {
-    return seat;
+  public String getSeats() {
+    return seats;
   }
 
-  public void setSeat(String seat) {
-    this.seat = seat;
+  public void setSeats(String seats) {
+    this.seats = seats;
   }
 
   public Integer getPrice() {
@@ -50,5 +50,15 @@ public class SelectedConfiguration  extends Observable {
     this.price = price;
     this.setChanged();
     this.notifyObservers(this);
+  }
+
+  public boolean areModelEngineTransmissionSeatsSet() {
+    if (this.model != null && !this.model.isEmpty()
+        && this.engine != null && !this.engine.isEmpty()
+        && this.transmission != null && !this.transmission.isEmpty()
+        && this.seats != null && !this.seats.isEmpty()) {
+      return true;
+    }
+    return false;
   }
 }

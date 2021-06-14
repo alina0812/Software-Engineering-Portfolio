@@ -5,6 +5,7 @@ import static java.awt.Font.BOLD;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -49,17 +50,21 @@ public class View extends JFrame implements Observer {
     JLabel model = new JLabel("Modell: ");
     model.setFont(fontBasic);
     comboBoxModels = new JComboBox<>();
+    comboBoxModels.setPreferredSize(new Dimension(180, 25));
     JLabel engine = new JLabel("Motor: ");
     engine.setFont(fontBasic);
     comboBoxEngines = new JComboBox<>();
+    comboBoxEngines.setPreferredSize(new Dimension(180, 25));
     comboBoxEngines.setRenderer(new MyCellRenderer());
     JLabel transmission = new JLabel("Getriebe: ");
     transmission.setFont(fontBasic);
     comboBoxTransmissions = new JComboBox<>();
+    comboBoxTransmissions.setPreferredSize(new Dimension(180, 25));
     comboBoxTransmissions.setRenderer(new MyCellRenderer());
     JLabel seats = new JLabel("Sitze: ");
     seats.setFont(fontBasic);
     comboBoxSeats = new JComboBox<>();
+    comboBoxSeats.setPreferredSize(new Dimension(180, 25));
     comboBoxSeats.setRenderer(new MyCellRenderer());
 
     Font fontBig = new Font("Verdana", BOLD, 18);
@@ -125,13 +130,6 @@ public class View extends JFrame implements Observer {
     }
   }
 
-  public boolean areAllComboBoxesFilled() {
-    return comboBoxModels.getItemCount() != 0 && !Objects.equals(comboBoxModels.getSelectedItem(), "")
-        && comboBoxEngines.getItemCount() != 0 && !Objects.equals(comboBoxEngines.getSelectedItem(), "")
-        && comboBoxTransmissions.getItemCount() != 0 && !Objects.equals(comboBoxTransmissions.getSelectedItem(), "")
-        && comboBoxSeats.getItemCount() != 0 && !Objects.equals(comboBoxSeats.getSelectedItem(), "");
-  }
-
   public void setDefaultBackgroundComboBoxEngines() {
     this.comboBoxEngines.setBackground(comboBoxModels.getBackground()); //default color
   }
@@ -173,6 +171,21 @@ public class View extends JFrame implements Observer {
         this.comboBoxModels.addItem("");
         for (String m : models) {
           this.comboBoxModels.addItem(m);
+        }
+        String[] engines = ((AvailableConfiguration) arg).getEngines();
+        this.comboBoxEngines.addItem("");
+        for (String e : engines) {
+          this.comboBoxEngines.addItem(e);
+        }
+        String[] transmissions = ((AvailableConfiguration) arg).getTransmissions();
+        comboBoxTransmissions.addItem("");
+        for (String t : transmissions) {
+          this.comboBoxTransmissions.addItem(t);
+        }
+        String[] seats = ((AvailableConfiguration) arg).getSeats();
+        comboBoxSeats.addItem("");
+        for (String s : seats) {
+          this.comboBoxSeats.addItem(s);
         }
         //Update ComboBoxes
       } else {

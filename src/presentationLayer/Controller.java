@@ -22,14 +22,14 @@ public class Controller {
     availableConfiguration.addObserver(view);
     selectedConfiguration.addObserver(view);
 
+    System.out.println("Call gegen ApplicationLayer  --> getAllConfiguration Data");
+    Configuration configuration = GetConfiguration.getConfiguration();
+    availableConfiguration.init(configuration.getModels(), configuration.getEngines(), configuration.getTransmissions(), configuration.getSeats());
+
     this.view.addModelSelectionListener(new ModelComboBoxListener());
     this.view.addEngineSelectionListener(new EngineComboBoxListener());
     this.view.addGearSelectionListener(new TransmissionComboBoxListener());
     this.view.addSeatsSelectionListener(new SeatsComboBoxListener());
-
-
-    Configuration configuration = GetConfiguration.getConfiguration();
-    availableConfiguration.init(configuration.getModels(), configuration.getEngines(), configuration.getTransmissions(), configuration.getSeats());
 
     view.setDefaultBackgroundComboBoxEngines();
     view.setDefaultBackgroundComboBoxTransmissions();
@@ -41,6 +41,7 @@ public class Controller {
   private void calculatePrice() {
     int p = 0;                              // remove later
 
+    System.out.println("Call gegen Application Layer --> Calculate Price");
     //int p = ApplicationLayerClass.calculatePrice(model.getModel(),
     // model.getEngine(), model.getGear(), model.getSeat());
     System.out.println("Preis ist: " + p);  //// remove if method is fully implemented and working
@@ -49,15 +50,8 @@ public class Controller {
 
   private void updateComboBoxes(String model) {
     System.out.println("This method should update all ComboBoxes according to model: " + model);
-
-    // In der ApplicationLayer sollte für Motor/Getriebe/Sitze jeweils einer String-Liste mit passenden Werten zurückgegeben werden
-    //ConfigurationDAO configuration = ApplicationLayerClass.getSuitedConfigurations(String model);
-    //Klasse configurationDAO hat Attribute List/Array<Motoren>, List/Array<Getriebe> und List/Array<Sitze> mit passenden Gettern und Settern
-
-    //availableConfiguration.update(configuration.getModels(), configuration.getEngines(), configuration.getTransmissions(), configuration.getSeats);
-
+    System.out.println("Call gegen Application Layer --> Get Configuration for model");
     SubConfiguration subConfiguration = GetConfiguration.getConfiguration(model);
-
     availableConfiguration.update(subConfiguration.getEngines(), subConfiguration.getTransmissions(), subConfiguration.getSeats());
   }
 
@@ -71,7 +65,7 @@ public class Controller {
         System.out.println("Model changed");              // remove Later
         selectedConfiguration.setModel((String) e.getItem());
         Controller.this.updateComboBoxes((String) e.getItem());
-        if (view.areAllComboBoxesFilled()) {
+        if (selectedConfiguration.areModelEngineTransmissionSeatsSet()) {
           Controller.this.calculatePrice();
         } else if (selectedConfiguration.getPrice() != null) {
           selectedConfiguration.setPrice(null);
@@ -87,7 +81,7 @@ public class Controller {
       if (e.getStateChange() == ItemEvent.SELECTED) {
         selectedConfiguration.setEngine((String) e.getItem());
         view.setDefaultBackgroundComboBoxEngines();
-        if (view.areAllComboBoxesFilled()) {
+        if (selectedConfiguration.areModelEngineTransmissionSeatsSet()) {
           Controller.this.calculatePrice();
         } else if (selectedConfiguration.getPrice() != null) {
           selectedConfiguration.setPrice(null);
@@ -103,7 +97,7 @@ public class Controller {
       if (e.getStateChange() == ItemEvent.SELECTED) {
         selectedConfiguration.setTransmission((String) e.getItem());
         view.setDefaultBackgroundComboBoxTransmissions();
-        if (view.areAllComboBoxesFilled()) {
+        if (selectedConfiguration.areModelEngineTransmissionSeatsSet()) {
           Controller.this.calculatePrice();
         } else if (selectedConfiguration.getPrice() != null) {
           selectedConfiguration.setPrice(null);
@@ -117,9 +111,9 @@ public class Controller {
     @Override
     public void itemStateChanged(ItemEvent e) {
       if (e.getStateChange() == ItemEvent.SELECTED) {
-        selectedConfiguration.setSeat((String) e.getItem());
+        selectedConfiguration.setSeats((String) e.getItem());
         view.setDefaultBackgroundComboBoxSeats();
-        if (view.areAllComboBoxesFilled()) {
+        if (selectedConfiguration.areModelEngineTransmissionSeatsSet()) {
           Controller.this.calculatePrice();
         } else if (selectedConfiguration.getPrice() != null) {
           selectedConfiguration.setPrice(null);
