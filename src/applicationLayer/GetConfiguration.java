@@ -2,6 +2,7 @@ package applicationLayer;
 
 import datalayer_test.*;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -11,8 +12,8 @@ public class GetConfiguration {
     private static List<Transmission> transmissionList = ReadJson.getTransmissions();
     private static List<Seat> seatList = ReadJson.getSeats();
 
+
     public static Configuration getConfiguration(){
-        //TODO: Singelton pattern
         String[] models = new String[modelList.size()];
         String[] engines = new String[engineList.size()];
         String[] transmissions = new String[transmissionList.size()];
@@ -56,11 +57,9 @@ public class GetConfiguration {
 
 
     public static SubConfiguration getSubConfiguration(String model){
-        //TODO: Singelton pattern
+        List<String> compatible = new ArrayList<>();
+        //TODO: Singelton pattern ?
         int modelId = 0;
-        String[] engines = new String[engineList.size()];
-        String[] transmissions = new String[transmissionList.size()];
-        String[] seats = new String[seatList.size()];
         int counter = 0;
 
         for (Model m:modelList) {
@@ -72,6 +71,7 @@ public class GetConfiguration {
         }
 
         if (modelId == 0){
+            System.out.println("False Model Name");
             return null;
             //TODO: exception falseModelName
         }
@@ -82,13 +82,12 @@ public class GetConfiguration {
             int[] compatible_with = engine.getCompatible_with();
             for (int i: compatible_with){
                 if (i == modelId) {
-                    engines[counter] = engine.getName();
-                    System.out.println(engines[counter]);
-                    counter++;
+                    compatible.add(engine.getName());
                 }
             }
         }
-        counter = 0;
+        String[] engines = compatible.toArray(new String[0]);
+        compatible.clear();
 
         Iterator iTransmission = transmissionList.iterator();
         while (iTransmission.hasNext()){
@@ -96,13 +95,12 @@ public class GetConfiguration {
             int[] compatible_with = transmission.getCompatible_with();
             for (int i: compatible_with){
                 if (i == modelId) {
-                    transmissions[counter] = transmission.getName();
-                    System.out.println(transmissions[counter]);
-                    counter++;
+                    compatible.add(transmission.getName());
                 }
             }
         }
-        counter = 0;
+        String[] transmissions = compatible.toArray(new String[0]);
+        compatible.clear();
 
         Iterator iSeat = seatList.iterator();
         while (iSeat.hasNext()){
@@ -110,12 +108,12 @@ public class GetConfiguration {
             int[] compatible_with = seat.getCompatible_with();
             for (int i: compatible_with){
                 if (i == modelId) {
-                    seats[counter] = seat.getName();
-                    System.out.println(seats[counter]);
-                    counter++;
+                    compatible.add(seat.getName());
                 }
             }
         }
+        String[] seats = compatible.toArray(new String[0]);
+        compatible.clear();
 
         SubConfiguration subConfig = new SubConfiguration(engines, transmissions, seats);
         return subConfig;
