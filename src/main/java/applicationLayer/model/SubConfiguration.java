@@ -1,4 +1,4 @@
-package applicationLayer;
+package applicationLayer.model;
 
 public class SubConfiguration {
 

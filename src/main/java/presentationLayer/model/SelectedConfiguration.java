@@ -1,4 +1,4 @@
-package presentationLayer.Model;
+package presentationLayer.model;
 
 import java.util.Observable;
 

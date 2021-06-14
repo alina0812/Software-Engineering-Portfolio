@@ -1,20 +1,26 @@
-package applicationLayer;
+package applicationLayer.model;
 
-import datalayer_test.*;
-
+import applicationLayer.Configuration;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import datalayer_test.model.ConfigurationDTO;
+import datalayer_test.model.Engine;
+import datalayer_test.model.Model;
+import datalayer_test.ReadJson;
+import datalayer_test.model.Seat;
+import datalayer_test.model.Transmission;
 
 public class GetConfiguration {
 
 
   public static Configuration getConfiguration() {
     ReadJson.load_data();
-    List<Model> modelList = ReadJson.getModels();
-    List<Engine> engineList = ReadJson.getEngines();
-    List<Transmission> transmissionList = ReadJson.getTransmissions();
-    List<Seat> seatList = ReadJson.getSeats();
+    ConfigurationDTO configurationDTO = ReadJson.getConfigurationDTO();
+    List<Model> modelList = configurationDTO.getModels();
+    List<Engine> engineList = configurationDTO.getEngines();
+    List<Transmission> transmissionList = configurationDTO.getTransmissions();
+    List<Seat> seatList = configurationDTO.getSeats();
     //TODO: Singelton pattern
     String[] models = new String[modelList.size()];
     String[] engines = new String[engineList.size()];
@@ -60,11 +66,12 @@ public class GetConfiguration {
 
   public static SubConfiguration getConfiguration(String model) {
     //TODO: Singelton pattern
-    List<Model> modelList = ReadJson.getModels();
-    List<Engine> engineList = ReadJson.getEngines();
-    List<Transmission> transmissionList = ReadJson.getTransmissions();
-    List<Seat> seatList = ReadJson.getSeats();
-    List<String> compatible = new ArrayList<>();
+    ConfigurationDTO configurationDTO = ReadJson.getConfigurationDTO();
+    List<Model> modelList = configurationDTO.getModels();
+    List<Engine> engineList = configurationDTO.getEngines();
+    List<Transmission> transmissionList = configurationDTO.getTransmissions();
+    List<Seat> seatList = configurationDTO.getSeats();
+    List<String> compatible = new ArrayList<String>();
 
 
     if (model == null || model.equals("")) {

@@ -12,7 +12,6 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ItemListener;
 import java.text.NumberFormat;
-import java.util.Objects;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.BorderFactory;
@@ -23,8 +22,8 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
 import javax.swing.plaf.basic.BasicComboPopup;
-import presentationLayer.Model.AvailableConfiguration;
-import presentationLayer.Model.SelectedConfiguration;
+import presentationLayer.model.AvailableConfiguration;
+import presentationLayer.model.SelectedConfiguration;
 
 public class View extends JFrame implements Observer {
 
@@ -42,7 +41,7 @@ public class View extends JFrame implements Observer {
     panel.setBackground(new Color(219, 213, 213));
 
     JLabel header = new JLabel("Car configuration");
-    header.setFont(new Font("Verdana", BOLD, 25));
+    header.setFont(new Font("Verdana", BOLD, 20));
 
     Font fontBasic = new Font("Verdana", BOLD, 13);
     JLabel option = new JLabel("Option: ");
@@ -106,6 +105,7 @@ public class View extends JFrame implements Observer {
 
   private GridBagConstraints createGridBagConstraintsHeader() {
     GridBagConstraints c = this.createGridBagConstraints(0, 0);
+    c.fill = GridBagConstraints.HORIZONTAL;
     c.gridwidth = 2;
     c.ipady = 30;
     return c;
@@ -159,7 +159,6 @@ public class View extends JFrame implements Observer {
     comboBoxSeats.addItemListener(listenForComboBox);
   }
 
-  @Override
   public void update(Observable o, Object arg) {
     System.out.println("Observer reached");
     // ComboBoxes
@@ -211,7 +210,7 @@ public class View extends JFrame implements Observer {
         }
         if (currentSelectedEngine != null) {
           comboBoxEngines.setSelectedItem(currentSelectedEngine);
-        } else if (!Objects.equals(selectedEngine, "") && !Objects.equals(comboBoxModels.getSelectedItem(), "")) {
+        } else if (("").equals(selectedEngine) && ("").equals(comboBoxModels.getSelectedItem())) {
           comboBoxEngines.setBackground(new Color(217, 50, 50, 163));
         }
         String[] transmissions = ((AvailableConfiguration) arg).getTransmissions();
@@ -225,7 +224,7 @@ public class View extends JFrame implements Observer {
         }
         if (currentSelectedTransmission != null) {
           comboBoxTransmissions.setSelectedItem(currentSelectedTransmission);
-        } else if (!Objects.equals(selectedTransmission, "") && !Objects.equals(comboBoxModels.getSelectedItem(), "")) {
+        } else if (("").equals(selectedTransmission) && ("").equals(comboBoxModels.getSelectedItem())) {
           comboBoxTransmissions.setBackground(new Color(217, 50, 50, 163));
         }
         String[] seats = ((AvailableConfiguration) arg).getSeats();
@@ -239,7 +238,7 @@ public class View extends JFrame implements Observer {
         }
         if (currentSelectedSeat != null) {
           comboBoxSeats.setSelectedItem(currentSelectedSeat);
-        } else if (!Objects.equals(selectedSeats, "") && !Objects.equals(comboBoxModels.getSelectedItem(), "")) {
+        } else if (("").equals(selectedSeats) && ("").equals(comboBoxModels.getSelectedItem())) {
           comboBoxSeats.setBackground(new Color(217, 50, 50, 163));
         }
 
@@ -251,20 +250,20 @@ public class View extends JFrame implements Observer {
     }
   }
 
-  class MyCellRenderer extends JLabel implements ListCellRenderer<Object> {
+  static class MyCellRenderer extends JLabel implements ListCellRenderer<Object> {
     public MyCellRenderer() {
       setOpaque(true);
     }
 
     @Override
-    public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+    public Component getListCellRendererComponent(JList<?> list, Object value, int index,
+                                                  boolean isSelected, boolean cellHasFocus) {
 
       // Empty string would be ignored --> replace with empty ascii character
-      if(value == null || value.toString().equals("") ) {
+      if (value == null || value.toString().equals("")) {
         char c = 0;
         value = Character.toString(c);
       }
-
 
       // background color overwrites background of comboBox
       setText(value.toString());
