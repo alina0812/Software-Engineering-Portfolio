@@ -2,7 +2,7 @@ package dataAccessLayer.model;
 
 import java.util.ArrayList;
 
-public class ConfigurationDTO {
+public class ConfigurationDAO {
 
   private ArrayList<Model> models;
   private ArrayList<Engine> engines;

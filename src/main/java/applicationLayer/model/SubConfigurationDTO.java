@@ -1,12 +1,12 @@
 package applicationLayer.model;
 
-public class SubConfiguration {
+public class SubConfigurationDTO {
 
   private String[] engines;
   private String[] transmissions;
   private String[] seats;
 
-  public SubConfiguration(String[] engines, String[] transmissions, String[] seats) {
+  public SubConfigurationDTO(String[] engines, String[] transmissions, String[] seats) {
     this.engines = engines;
     this.transmissions = transmissions;
     this.seats = seats;

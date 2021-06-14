@@ -1,14 +1,14 @@
 package dataAccessLayer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dataAccessLayer.model.ConfigurationDTO;
+import dataAccessLayer.model.ConfigurationDAO;
 import java.io.File;
 import java.io.IOException;
 
 
 public class ReadJson {
 
-  private static ConfigurationDTO configurationDTO;
+  private static ConfigurationDAO configurationDAO;
 
   private ReadJson() {
     // no instance of ReadJson should ever be created
@@ -19,14 +19,14 @@ public class ReadJson {
     File jsonInputFile = new File("Data.json");
     ObjectMapper objectMapper = new ObjectMapper();
     try {
-      configurationDTO = objectMapper.readValue(jsonInputFile, ConfigurationDTO.class);
+      configurationDAO = objectMapper.readValue(jsonInputFile, ConfigurationDAO.class);
     } catch (IOException e) {
 
     }
   }
 
-  public static ConfigurationDTO getConfigurationDTO() {
-    return configurationDTO;
+  public static ConfigurationDAO getConfigurationDTO() {
+    return configurationDAO;
   }
 
 }

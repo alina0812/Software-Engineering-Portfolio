@@ -1,13 +1,13 @@
 package applicationLayer.model;
 
-public class Configuration {
+public class ConfigurationDTO {
 
   private String[] models;
   private String[] engines;
   private String[] transmissions;
   private String[] seats;
 
-  public Configuration(String[] models, String[] engines, String[] transmissions, String[] seats) {
+  public ConfigurationDTO(String[] models, String[] engines, String[] transmissions, String[] seats) {
     this.models = models;
     this.engines = engines;
     this.transmissions = transmissions;

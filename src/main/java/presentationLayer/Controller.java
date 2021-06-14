@@ -1,8 +1,8 @@
 package presentationLayer;
 
-import applicationLayer.model.Configuration;
+import applicationLayer.model.ConfigurationDTO;
 import applicationLayer.ConfigurationService;
-import applicationLayer.model.SubConfiguration;
+import applicationLayer.model.SubConfigurationDTO;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import presentationLayer.model.AvailableConfiguration;
@@ -23,9 +23,9 @@ public class Controller {
     selectedConfiguration.addObserver(view);
 
     System.out.println("Call gegen ApplicationLayer  --> getAllConfiguration Data");
-    Configuration configuration = ConfigurationService.getConfiguration();
-    availableConfiguration.init(configuration.getModels(), configuration.getEngines(),
-        configuration.getTransmissions(), configuration.getSeats());
+    ConfigurationDTO configurationDTO = ConfigurationService.getConfiguration();
+    availableConfiguration.init(configurationDTO.getModels(), configurationDTO.getEngines(),
+        configurationDTO.getTransmissions(), configurationDTO.getSeats());
 
     this.view.addModelSelectionListener(new ModelComboBoxListener());
     this.view.addEngineSelectionListener(new EngineComboBoxListener());
@@ -49,9 +49,9 @@ public class Controller {
   private void updateComboBoxes(String model) {
     System.out.println("This method should update all ComboBoxes according to model: " + model);
     System.out.println("Call gegen Application Layer --> Get Configuration for model");
-    SubConfiguration subConfiguration = ConfigurationService.getConfiguration(model);
-    availableConfiguration.update(subConfiguration.getEngines(),
-        subConfiguration.getTransmissions(), subConfiguration.getSeats());
+    SubConfigurationDTO subConfigurationDTO = ConfigurationService.getConfiguration(model);
+    availableConfiguration.update(subConfigurationDTO.getEngines(),
+        subConfigurationDTO.getTransmissions(), subConfigurationDTO.getSeats());
   }
 
   // ItemListener for all ComboBoxes
