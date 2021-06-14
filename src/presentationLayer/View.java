@@ -247,7 +247,7 @@ public class View extends JFrame implements Observer {
     public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
 
       // Empty string would be ignored --> replace with empty ascii character
-      if(value.toString().equals("")) {
+      if(value == null || value.toString().equals("") ) {
         char c = 0;
         value = Character.toString(c);
       }
