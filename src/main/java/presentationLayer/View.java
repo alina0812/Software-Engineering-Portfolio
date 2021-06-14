@@ -210,7 +210,7 @@ public class View extends JFrame implements Observer {
         }
         if (currentSelectedEngine != null) {
           comboBoxEngines.setSelectedItem(currentSelectedEngine);
-        } else if (("").equals(selectedEngine) && ("").equals(comboBoxModels.getSelectedItem())) {
+        } else if (!("").equals(selectedEngine) && !("").equals(comboBoxModels.getSelectedItem())) {
           comboBoxEngines.setBackground(new Color(217, 50, 50, 163));
         }
         String[] transmissions = ((AvailableConfiguration) arg).getTransmissions();
@@ -224,7 +224,7 @@ public class View extends JFrame implements Observer {
         }
         if (currentSelectedTransmission != null) {
           comboBoxTransmissions.setSelectedItem(currentSelectedTransmission);
-        } else if (("").equals(selectedTransmission) && ("").equals(comboBoxModels.getSelectedItem())) {
+        } else if (!("").equals(selectedTransmission) && !("").equals(comboBoxModels.getSelectedItem())) {
           comboBoxTransmissions.setBackground(new Color(217, 50, 50, 163));
         }
         String[] seats = ((AvailableConfiguration) arg).getSeats();
@@ -238,7 +238,7 @@ public class View extends JFrame implements Observer {
         }
         if (currentSelectedSeat != null) {
           comboBoxSeats.setSelectedItem(currentSelectedSeat);
-        } else if (("").equals(selectedSeats) && ("").equals(comboBoxModels.getSelectedItem())) {
+        } else if (!("").equals(selectedSeats) && !("").equals(comboBoxModels.getSelectedItem())) {
           comboBoxSeats.setBackground(new Color(217, 50, 50, 163));
         }
 

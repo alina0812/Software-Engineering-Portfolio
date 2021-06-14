@@ -1,7 +1,7 @@
-package datalayer_test;
+package dataAccessLayer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import datalayer_test.model.ConfigurationDTO;
+import dataAccessLayer.model.ConfigurationDTO;
 import java.io.File;
 import java.io.IOException;
 
@@ -9,7 +9,6 @@ import java.io.IOException;
 public class ReadJson {
 
   private static ConfigurationDTO configurationDTO;
-
 
   private ReadJson() {
     // no instance of ReadJson should ever be created

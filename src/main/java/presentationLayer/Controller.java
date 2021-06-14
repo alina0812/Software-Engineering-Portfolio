@@ -1,7 +1,7 @@
 package presentationLayer;
 
-import applicationLayer.Configuration;
-import applicationLayer.model.GetConfiguration;
+import applicationLayer.model.Configuration;
+import applicationLayer.ConfigurationService;
 import applicationLayer.model.SubConfiguration;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
@@ -23,7 +23,7 @@ public class Controller {
     selectedConfiguration.addObserver(view);
 
     System.out.println("Call gegen ApplicationLayer  --> getAllConfiguration Data");
-    Configuration configuration = GetConfiguration.getConfiguration();
+    Configuration configuration = ConfigurationService.getConfiguration();
     availableConfiguration.init(configuration.getModels(), configuration.getEngines(),
         configuration.getTransmissions(), configuration.getSeats());
 
@@ -49,7 +49,7 @@ public class Controller {
   private void updateComboBoxes(String model) {
     System.out.println("This method should update all ComboBoxes according to model: " + model);
     System.out.println("Call gegen Application Layer --> Get Configuration for model");
-    SubConfiguration subConfiguration = GetConfiguration.getConfiguration(model);
+    SubConfiguration subConfiguration = ConfigurationService.getConfiguration(model);
     availableConfiguration.update(subConfiguration.getEngines(),
         subConfiguration.getTransmissions(), subConfiguration.getSeats());
   }

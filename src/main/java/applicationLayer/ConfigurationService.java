@@ -1,17 +1,18 @@
-package applicationLayer.model;
+package applicationLayer;
 
-import applicationLayer.Configuration;
+import applicationLayer.model.Configuration;
+import applicationLayer.model.SubConfiguration;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import datalayer_test.model.ConfigurationDTO;
-import datalayer_test.model.Engine;
-import datalayer_test.model.Model;
-import datalayer_test.ReadJson;
-import datalayer_test.model.Seat;
-import datalayer_test.model.Transmission;
+import dataAccessLayer.model.ConfigurationDTO;
+import dataAccessLayer.model.Engine;
+import dataAccessLayer.model.Model;
+import dataAccessLayer.ReadJson;
+import dataAccessLayer.model.Seat;
+import dataAccessLayer.model.Transmission;
 
-public class GetConfiguration {
+public class ConfigurationService {
 
 
   public static Configuration getConfiguration() {
@@ -75,7 +76,7 @@ public class GetConfiguration {
 
 
     if (model == null || model.equals("")) {
-      Configuration config = GetConfiguration.getConfiguration();
+      Configuration config = ConfigurationService.getConfiguration();
       String[] config_engines = config.getEngines();
       String[] config_transmissions = config.getTransmissions();
       String[] config_seats = config.getSeats();
