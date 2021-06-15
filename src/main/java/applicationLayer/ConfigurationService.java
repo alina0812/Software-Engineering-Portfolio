@@ -66,7 +66,7 @@ public class ConfigurationService {
 
 
   public static SubConfigurationDTO getConfiguration(String model) {
-    //TODO: Singelton pattern
+    ReadJson.load_data();
     ConfigurationDAO configurationDAO = ReadJson.getConfigurationDTO();
     List<Model> modelList = configurationDAO.getModels();
     List<Engine> engineList = configurationDAO.getEngines();
