@@ -2,12 +2,14 @@ package applicationLayer;
 
 import applicationLayer.model.ConfigurationDTO;
 import applicationLayer.model.SubConfigurationDTO;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import dataAccessLayer.model.ConfigurationDAO;
 import dataAccessLayer.model.Engine;
 import dataAccessLayer.model.Model;
 import dataAccessLayer.model.Seat;
 import dataAccessLayer.model.Transmission;
 import dataAccessLayer.ReadJson;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -22,7 +24,7 @@ public class ConfigurationService {
   private final HashMap<String, Integer> transmissionPriceHashMap;
   private final HashMap<String, Integer> seatsPriceMap;
 
-  public ConfigurationService() {
+  public ConfigurationService() throws IOException {
     readJson = new ReadJson();
     readJson.load_data();
     subConfigurationDTOHashMap = new HashMap<String, SubConfigurationDTO>();
@@ -32,7 +34,7 @@ public class ConfigurationService {
     seatsPriceMap = new HashMap<>();
   }
 
-  public ConfigurationDTO getSubConfiguration() {
+  public ConfigurationDTO getSubConfiguration() throws IOException {
 
     // Get all ConfigurationData
     ConfigurationDAO configurationDAO = readJson.getConfigurationDTO();
@@ -40,6 +42,11 @@ public class ConfigurationService {
     List<Engine> engineList = configurationDAO.getEngines();
     List<Transmission> transmissionList = configurationDAO.getTransmissions();
     List<Seat> seatList = configurationDAO.getSeats();
+
+    if (modelList == null || modelList.isEmpty() || engineList == null || engineList.isEmpty() ||
+        transmissionList == null || transmissionList.isEmpty() || seatList == null || seatList.isEmpty()) {
+      throw new IOException("JSON file does not have the correct syntax");
+    }
 
     String[] models = new String[modelList.size()];
     String[] engines = new String[engineList.size()];
@@ -83,7 +90,7 @@ public class ConfigurationService {
     ConfigurationDTO config = new ConfigurationDTO(models, engines, transmissions, seats);
 
 
-    //fill SubConfiguration-HashMap for easiert access to subconfigurations
+    //fill SubConfiguration-HashMap for easier access to subconfigurations
     subConfigurationDTOHashMap.put("", new SubConfigurationDTO(config.getEngines(),
         config.getTransmissions(), config.getSeats()));
     subConfigurationDTOHashMap.put(null, new SubConfigurationDTO(config.getEngines(),
@@ -134,7 +141,6 @@ public class ConfigurationService {
       compatible.clear();
 
       SubConfigurationDTO subConfig = new SubConfigurationDTO(engines2, transmissions2, seats2);
-
       subConfigurationDTOHashMap.put(m.getName(), subConfig);
     }
     return config;

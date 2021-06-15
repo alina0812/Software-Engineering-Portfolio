@@ -3,10 +3,12 @@ package presentationLayer;
 import applicationLayer.model.ConfigurationDTO;
 import applicationLayer.ConfigurationService;
 import applicationLayer.model.SubConfigurationDTO;
+import dataAccessLayer.ReadJson;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.io.IOException;
 import presentationLayer.model.AvailableConfiguration;
 import presentationLayer.model.SelectedConfiguration;
 
@@ -18,7 +20,7 @@ public class Controller {
   private final ConfigurationService configurationService;
 
   public Controller(View view, AvailableConfiguration availableConfiguration,
-                    SelectedConfiguration selectedConfiguration) {
+                    SelectedConfiguration selectedConfiguration) throws IOException {
     this.view = view;
     this.availableConfiguration = availableConfiguration;
     this.selectedConfiguration = selectedConfiguration;

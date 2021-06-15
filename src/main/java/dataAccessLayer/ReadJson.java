@@ -15,18 +15,14 @@ public class ReadJson {
   }
 
 
-  public void load_data() {
+  public void load_data() throws IOException {
     if (configurationDAO == null) {
       File jsonInputFile = new File("Data.json");
       ObjectMapper objectMapper = new ObjectMapper();
-      try {
-        if (!jsonInputFile.exists()) {
-          throw new FileNotFoundException("File 'Data.json' not found");
-        }
-        configurationDAO = objectMapper.readValue(jsonInputFile, ConfigurationDAO.class);
-      } catch (IOException e) {
-        e.printStackTrace();
+      if (!jsonInputFile.exists()) {
+        throw new FileNotFoundException("File 'Data.json' not found");
       }
+      configurationDAO = objectMapper.readValue(jsonInputFile, ConfigurationDAO.class);
     }
   }
 
