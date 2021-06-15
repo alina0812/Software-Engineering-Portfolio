@@ -10,17 +10,25 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemListener;
 import java.text.NumberFormat;
+import java.util.Objects;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
+import javax.swing.SwingConstants;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
+import javax.swing.border.TitledBorder;
 import javax.swing.plaf.basic.BasicComboPopup;
 import presentationLayer.model.AvailableConfiguration;
 import presentationLayer.model.SelectedConfiguration;
@@ -32,16 +40,28 @@ public class View extends JFrame implements Observer {
   private final JComboBox<String> comboBoxEngines;
   private final JComboBox<String> comboBoxTransmissions;
   private final JComboBox<String> comboBoxSeats;
+  private final JLabel messages;
+  private final JButton resetButton;
 
   public View() {
 
     JPanel panel = new JPanel();
-    panel.setBorder(BorderFactory.createEmptyBorder(10, 30, 10, 30));
+    panel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
     panel.setLayout(new GridBagLayout());
-    panel.setBackground(new Color(219, 213, 213));
+    panel.setBackground(new Color(232, 226, 226, 255));
 
-    JLabel header = new JLabel("Car configuration");
-    header.setFont(new Font("Verdana", BOLD, 20));
+    JLabel header = new JLabel("Fahrzeugkonfiguration", SwingConstants.CENTER);
+    header.setFont(new Font("Avenir Next LT Pro", BOLD, 26));
+
+    messages = new JLabel("<html>Bitte wählen Sie eine Fahrzeugkonfiguration aus<html>");
+    CompoundBorder compoundBorder = BorderFactory.createCompoundBorder(new LineBorder(Color.BLACK),
+        new EmptyBorder(2, 10, 2, 10));
+    messages.setBorder(new TitledBorder(compoundBorder, "Hinweise"));
+    messages.setFont(new Font("Verdana", BOLD, 13));
+    messages.setPreferredSize(new Dimension(250, 100));
+
+    resetButton = new JButton("reset");
+
 
     Font fontBasic = new Font("Verdana", BOLD, 13);
     JLabel option = new JLabel("Option: ");
@@ -84,6 +104,8 @@ public class View extends JFrame implements Observer {
     popup4.getList().setSelectionBackground(c);
 
     panel.add(header, this.createGridBagConstraintsHeader());
+    panel.add(messages, this.createGridBagConstraintsMessageBox());
+    panel.add(resetButton, this.createGridBagConstraintsResetButton());
     panel.add(option, this.createGridBagConstraints(1, 1));
     panel.add(model, this.createGridBagConstraints(0, 2));
     panel.add(comboBoxModels, this.createGridBagConstraints(1, 2));
@@ -98,15 +120,15 @@ public class View extends JFrame implements Observer {
 
     this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     this.add(panel, BorderLayout.CENTER);
-    this.setTitle("Car configuration");
+    this.setTitle("Fahrzeugkonfiguration");
     this.pack();
-    this.setSize(450, 450);
+    this.setSize(700, 450);
   }
 
   private GridBagConstraints createGridBagConstraintsHeader() {
     GridBagConstraints c = this.createGridBagConstraints(0, 0);
     c.fill = GridBagConstraints.HORIZONTAL;
-    c.gridwidth = 2;
+    c.gridwidth = 3;
     c.ipady = 30;
     return c;
   }
@@ -120,6 +142,19 @@ public class View extends JFrame implements Observer {
     return c;
   }
 
+  private GridBagConstraints createGridBagConstraintsMessageBox() {
+    GridBagConstraints c = this.createGridBagConstraints(2, 1);
+    c.fill = GridBagConstraints.HORIZONTAL;
+    c.gridheight = 3;
+    return c;
+  }
+
+  private GridBagConstraints createGridBagConstraintsResetButton() {
+    GridBagConstraints c = this.createGridBagConstraints(2, 6);
+    c.fill = GridBagConstraints.HORIZONTAL;
+    return c;
+  }
+
   public void setPriceResult(Integer price) {
     if (price != null) {
       char c = 8364; //Ascii code
@@ -130,12 +165,21 @@ public class View extends JFrame implements Observer {
     }
   }
 
+  public void setMessageText(String text) {
+    messages.setText(text);
+  }
+
+  public boolean isMessageBoxEmpty(){
+    return messages.getText() == null || messages.getText().equals("");
+  }
+
   public void setDefaultBackgroundComboBoxEngines() {
     this.comboBoxEngines.setBackground(comboBoxModels.getBackground()); //default color
   }
 
   public void setDefaultBackgroundComboBoxTransmissions() {
     this.comboBoxTransmissions.setBackground(comboBoxModels.getBackground()); //default color
+
   }
 
   public void setDefaultBackgroundComboBoxSeats() {
@@ -157,6 +201,10 @@ public class View extends JFrame implements Observer {
 
   public void addSeatsSelectionListener(ItemListener listenForComboBox) {
     comboBoxSeats.addItemListener(listenForComboBox);
+  }
+
+  public void addResetButtonActionListener(ActionListener actionListener) {
+    resetButton.addActionListener(actionListener);
   }
 
   public void update(Observable o, Object arg) {
@@ -204,42 +252,47 @@ public class View extends JFrame implements Observer {
         this.comboBoxEngines.addItem("");
         for (String e : engines) {
           this.comboBoxEngines.addItem(e);
-          if (selectedEngine != null && selectedEngine.equals(e)) {
+          if (!Objects.equals(selectedEngine, "") && Objects.equals(selectedEngine, e)) {
             currentSelectedEngine = e;
           }
         }
         if (currentSelectedEngine != null) {
           comboBoxEngines.setSelectedItem(currentSelectedEngine);
-        } else if (!("").equals(selectedEngine) && !("").equals(comboBoxModels.getSelectedItem())) {
+        } else if (!selectedEngine.equals("") && comboBoxModels.getSelectedItem() != null) {
           comboBoxEngines.setBackground(new Color(217, 50, 50, 163));
+          this.setMessageText("<html>Eine oder mehrere gewählte Optionen sind für dieses Modell nicht verfügbar. "
+              + "Bitte eine neue Option wählen.<html>");
         }
         String[] transmissions = ((AvailableConfiguration) arg).getTransmissions();
         String currentSelectedTransmission = null;
         comboBoxTransmissions.addItem("");
         for (String t : transmissions) {
           this.comboBoxTransmissions.addItem(t);
-          if (selectedTransmission != null && selectedTransmission.equals(t)) {
+          if (!Objects.equals(selectedTransmission, "") && Objects.equals(selectedTransmission, t)) {
             currentSelectedTransmission = t;
           }
         }
         if (currentSelectedTransmission != null) {
           comboBoxTransmissions.setSelectedItem(currentSelectedTransmission);
-        } else if (!("").equals(selectedTransmission) && !("").equals(comboBoxModels.getSelectedItem())) {
+        } else if (!Objects.equals(selectedTransmission, "") && comboBoxModels.getSelectedItem() != null) {
           comboBoxTransmissions.setBackground(new Color(217, 50, 50, 163));
+          this.setMessageText("<html>Eine oder mehrere Optionen sind für dieses Modell nicht verfügbar. "
+              + "Bitte eine neue Option wählen.<html>");
         }
         String[] seats = ((AvailableConfiguration) arg).getSeats();
         String currentSelectedSeat = null;
         comboBoxSeats.addItem("");
         for (String s : seats) {
           this.comboBoxSeats.addItem(s);
-          if (selectedSeats != null && selectedSeats.equals(s)) {
+          if (!Objects.equals(selectedSeats, "") && Objects.equals(selectedSeats, s)) {
             currentSelectedSeat = s;
           }
         }
         if (currentSelectedSeat != null) {
           comboBoxSeats.setSelectedItem(currentSelectedSeat);
-        } else if (!("").equals(selectedSeats) && !("").equals(comboBoxModels.getSelectedItem())) {
+        } else if (!Objects.equals(selectedSeats, "") && comboBoxModels.getSelectedItem() != null) {
           comboBoxSeats.setBackground(new Color(217, 50, 50, 163));
+          this.setMessageText("<html>Eine oder mehrere gewählte Optionen sind für dieses Modell nicht verfügbar. Bitte eine neue Option wählen.<html>");
         }
 
       }
@@ -247,6 +300,20 @@ public class View extends JFrame implements Observer {
     } else if (o instanceof SelectedConfiguration) {
       System.out.println("Preis eintragen");
       this.setPriceResult(((SelectedConfiguration) arg).getPrice());
+
+      //the following is only important for resetting
+      if (!Objects.equals(comboBoxEngines.getSelectedItem(), ((SelectedConfiguration) arg).getEngine())) {
+        comboBoxEngines.setSelectedItem(((SelectedConfiguration) arg).getEngine());
+      }
+      if (!Objects.equals(comboBoxTransmissions.getSelectedItem(), ((SelectedConfiguration) arg).getTransmission())) {
+        comboBoxTransmissions.setSelectedItem(((SelectedConfiguration) arg).getTransmission());
+      }
+      if (!Objects.equals(comboBoxSeats.getSelectedItem(), ((SelectedConfiguration) arg).getSeats())) {
+        comboBoxSeats.setSelectedItem(((SelectedConfiguration) arg).getSeats());
+      }
+      if (!Objects.equals(comboBoxModels.getSelectedItem(), ((SelectedConfiguration) arg).getModel())) {
+        comboBoxModels.setSelectedItem(((SelectedConfiguration) arg).getModel());
+      }
     }
   }
 
