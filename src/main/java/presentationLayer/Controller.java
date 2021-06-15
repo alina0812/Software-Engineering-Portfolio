@@ -3,6 +3,8 @@ package presentationLayer;
 import applicationLayer.model.ConfigurationDTO;
 import applicationLayer.ConfigurationService;
 import applicationLayer.model.SubConfigurationDTO;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import presentationLayer.model.AvailableConfiguration;
@@ -31,6 +33,7 @@ public class Controller {
     this.view.addEngineSelectionListener(new EngineComboBoxListener());
     this.view.addGearSelectionListener(new TransmissionComboBoxListener());
     this.view.addSeatsSelectionListener(new SeatsComboBoxListener());
+    this.view.addResetButtonActionListener(new ResetButtonListener());
 
     view.setVisible(true);
 
@@ -50,6 +53,25 @@ public class Controller {
     System.out.println("This method should update all ComboBoxes according to model: " + model);
     System.out.println("Call gegen Application Layer --> Get Configuration for model");
     SubConfigurationDTO subConfigurationDTO = ConfigurationService.getConfiguration(model);
+    // update selected options if they are not available anymore
+    for (String engine : subConfigurationDTO.getEngines()) {
+      if (engine.equals(selectedConfiguration.getEngine())) {
+        break;
+      }
+      selectedConfiguration.setEngine(null);
+    }
+    for (String transmission : subConfigurationDTO.getTransmissions()) {
+      if (transmission.equals(selectedConfiguration.getTransmission())) {
+        break;
+      }
+      selectedConfiguration.setTransmission(null);
+    }
+    for (String seats : subConfigurationDTO.getSeats()) {
+      if (seats.equals(selectedConfiguration.getSeats())) {
+        break;
+      }
+      selectedConfiguration.setSeats(null);
+    }
     availableConfiguration.update(subConfigurationDTO.getEngines(),
         subConfigurationDTO.getTransmissions(), subConfigurationDTO.getSeats());
   }
@@ -65,8 +87,14 @@ public class Controller {
         Controller.this.updateComboBoxes((String) e.getItem());
         if (selectedConfiguration.areModelEngineTransmissionSeatsSet()) {
           Controller.this.calculatePrice();
-        } else if (selectedConfiguration.getPrice() != null) {
-          selectedConfiguration.setPrice(null);
+          view.setMessageText(null);
+        } else {
+          if (selectedConfiguration.getPrice() != null) {
+            selectedConfiguration.setPrice(null);
+          }
+          if (view.isMessageBoxEmpty()) {
+            view.setMessageText("<html>Bitte wählen Sie eine Fahrzeugkonfiguration aus<html>");
+          }
         }
       }
     }
@@ -81,8 +109,14 @@ public class Controller {
         view.setDefaultBackgroundComboBoxEngines();
         if (selectedConfiguration.areModelEngineTransmissionSeatsSet()) {
           Controller.this.calculatePrice();
-        } else if (selectedConfiguration.getPrice() != null) {
-          selectedConfiguration.setPrice(null);
+          view.setMessageText(null);
+        } else {
+          if (selectedConfiguration.getPrice() != null) {
+            selectedConfiguration.setPrice(null);
+          }
+          if (view.isMessageBoxEmpty()) {
+            view.setMessageText("<html>Bitte wählen Sie eine Fahrzeugkonfiguration aus<html>");
+          }
         }
       }
     }
@@ -97,26 +131,56 @@ public class Controller {
         view.setDefaultBackgroundComboBoxTransmissions();
         if (selectedConfiguration.areModelEngineTransmissionSeatsSet()) {
           Controller.this.calculatePrice();
-        } else if (selectedConfiguration.getPrice() != null) {
-          selectedConfiguration.setPrice(null);
+          view.setMessageText(null);
+        } else {
+          if (selectedConfiguration.getPrice() != null) {
+            selectedConfiguration.setPrice(null);
+          }
+          if (view.isMessageBoxEmpty()) {
+            view.setMessageText("<html>Bitte wählen Sie eine Fahrzeugkonfiguration aus<html>");
+          }
         }
       }
     }
   }
 
-  class SeatsComboBoxListener implements ItemListener {
+    class SeatsComboBoxListener implements ItemListener {
 
-    @Override
-    public void itemStateChanged(ItemEvent e) {
-      if (e.getStateChange() == ItemEvent.SELECTED) {
-        selectedConfiguration.setSeats((String) e.getItem());
-        view.setDefaultBackgroundComboBoxSeats();
-        if (selectedConfiguration.areModelEngineTransmissionSeatsSet()) {
-          Controller.this.calculatePrice();
-        } else if (selectedConfiguration.getPrice() != null) {
-          selectedConfiguration.setPrice(null);
+      @Override
+      public void itemStateChanged(ItemEvent e) {
+        if (e.getStateChange() == ItemEvent.SELECTED || e.getItem() == null) {
+          System.out.println("Seats changed");
+          selectedConfiguration.setSeats((String) e.getItem());
+          view.setDefaultBackgroundComboBoxSeats();
+          if (selectedConfiguration.areModelEngineTransmissionSeatsSet()) {
+            Controller.this.calculatePrice();
+            view.setMessageText(null);
+          } else {
+            if (selectedConfiguration.getPrice() != null) {
+              selectedConfiguration.setPrice(null);
+            }
+            if (view.isMessageBoxEmpty()) {
+              view.setMessageText("<html>Bitte wählen Sie eine Fahrzeugkonfiguration aus<html>");
+            }
+          }
         }
       }
+    }
+
+  class ResetButtonListener implements ActionListener {
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      view.setMessageText("<html>Bitte wählen Sie eine Fahrzeugkonfiguration aus<html>");
+      view.setDefaultBackgroundComboBoxEngines();
+      view.setDefaultBackgroundComboBoxTransmissions();
+      view.setDefaultBackgroundComboBoxSeats();
+
+      selectedConfiguration.setModel("");
+      selectedConfiguration.setEngine("");
+      selectedConfiguration.setTransmission("");
+      selectedConfiguration.setSeats("");
+      selectedConfiguration.setPrice(null);
     }
   }
 }
