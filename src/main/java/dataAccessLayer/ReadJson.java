@@ -12,9 +12,7 @@ public class ReadJson {
 
   private static ConfigurationDAO configurationDAO;
 
-  private ReadJson() {
-    // no instance of ReadJson should ever be created
-  }
+  private ReadJson() {}
 
 
   public static void load_data() {
