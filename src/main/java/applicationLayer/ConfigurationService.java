@@ -53,40 +53,76 @@ public class ConfigurationService {
     String[] transmissions = new String[transmissionList.size()];
     String[] seats = new String[seatList.size()];
 
+    // Get all models
     int counter = 0;
     Iterator iModel = modelList.iterator();
     while (iModel.hasNext()) {
       Model model = (Model) iModel.next();
+
+      //Check for mapping errors
+      if (model.getName() == null || model.getName().equals("") || model.getModel_id() == 0 || model.getPrice() == 0) {
+        throw new IOException("JSON file does not have the correct syntax");
+      }
+
       models[counter] = model.getName();
       modelPriceHashMap.put(model.getName(), model.getPrice());
       counter++;
     }
+
+    // Get all engines
     counter = 0;
     Iterator iEngine = engineList.iterator();
     while (iEngine.hasNext()) {
       Engine engine = (Engine) iEngine.next();
-      engines[counter] = engine.getName();
+      String name = engine.getName();
+
+      //Check for mapping errors
+      if (engine.getName() == null || engine.getName().equals("") || engine.getModel_id() == 0 || engine.getPrice() == 0) {
+        throw new IOException("JSON file does not have the correct syntax");
+      }
+
+      engines[counter] = name;
       enginePriceHashMap.put(engine.getName(), engine.getPrice());
       counter++;
     }
+
+    //Get all transmissions
     counter = 0;
     Iterator iTransmission = transmissionList.iterator();
     while (iTransmission.hasNext()) {
       Transmission transmission = (Transmission) iTransmission.next();
-      transmissions[counter] = transmission.getName();
+      String name = transmission.getName();
+
+      //Check for mapping errors
+      if (transmission.getName() == null || transmission.getName().equals("") ||
+          transmission.getModel_id() == 0 || transmission.getPrice() == 0) {
+        throw new IOException("JSON file does not have the correct syntax");
+      }
+
+      transmissions[counter] = name;
       transmissionPriceHashMap.put(transmission.getName(), transmission.getPrice());
       counter++;
     }
+
+    //Get all seats
     counter = 0;
     Iterator iSeat = seatList.iterator();
     while (iSeat.hasNext()) {
       Seat seat = (Seat) iSeat.next();
-      seats[counter] = seat.getName();
+      String name = seat.getName();
+
+      //Check for mapping errors
+      if (seat.getName() == null || seat.getName().equals("") || seat.getModel_id() == 0 || seat.getPrice() == 0) {
+        throw new IOException("JSON file does not have the correct syntax");
+      }
+
+      seats[counter] = name;
       seatsPriceMap.put(seat.getName(), seat.getPrice());
       counter++;
     }
 
-    //config will be returned
+    // Create object with all models, objects and seats
+    // config will be returned
     ConfigurationDTO config = new ConfigurationDTO(models, engines, transmissions, seats);
 
 
@@ -105,11 +141,17 @@ public class ConfigurationService {
       while (iEngine2.hasNext()) {
         Engine engine = (Engine) iEngine2.next();
         int[] compatible_with = engine.getCompatible_with();
+        if (compatible_with.length == 0) {
+          throw new IOException("JSON file does not have the corrext syntax");
+        }
         for (int i : compatible_with) {
           if (i == modelId) {
             compatible.add(engine.getName());
           }
         }
+      }
+      if (compatible.isEmpty()) {
+        throw new IOException("JSON has not configured engine(s) for model_id: " + modelId);
       }
       String[] engines2 = compatible.toArray(new String[0]);
       compatible.clear();
@@ -118,11 +160,17 @@ public class ConfigurationService {
       while (iTransmission2.hasNext()) {
         Transmission transmission = (Transmission) iTransmission2.next();
         int[] compatible_with = transmission.getCompatible_with();
+        if (compatible_with.length == 0) {
+          throw new IOException("JSON file does not have the corrext syntax");
+        }
         for (int i : compatible_with) {
           if (i == modelId) {
             compatible.add(transmission.getName());
           }
         }
+      }
+      if (compatible.isEmpty()) {
+        throw new IOException("JSON has not configured an transmission(s) for model_id: " + modelId);
       }
       String[] transmissions2 = compatible.toArray(new String[0]);
       compatible.clear();
@@ -131,11 +179,17 @@ public class ConfigurationService {
       while (iSeat2.hasNext()) {
         Seat seat = (Seat) iSeat2.next();
         int[] compatible_with = seat.getCompatible_with();
+        if (compatible_with.length == 0) {
+          throw new IOException("JSON file does not have the corrext syntax");
+        }
         for (int i : compatible_with) {
           if (i == modelId) {
             compatible.add(seat.getName());
           }
         }
+      }
+      if (compatible.isEmpty()) {
+        throw new IOException("JSON has not configured an seats for model_id: " + modelId);
       }
       String[] seats2 = compatible.toArray(new String[0]);
       compatible.clear();
@@ -145,7 +199,6 @@ public class ConfigurationService {
     }
     return config;
   }
-
 
   public SubConfigurationDTO getSubConfiguration(String model) {
     return subConfigurationDTOHashMap.get(model);
