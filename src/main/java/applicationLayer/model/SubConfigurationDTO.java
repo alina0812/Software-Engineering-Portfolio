@@ -1,21 +1,15 @@
-package applicationLayer;
+package applicationLayer.model;
 
-public class Configuration {
+public class SubConfigurationDTO {
 
-  private String[] models;
   private String[] engines;
   private String[] transmissions;
   private String[] seats;
 
-  public Configuration(String[] models, String[] engines, String[] transmissions, String[] seats) {
-    this.models = models;
+  public SubConfigurationDTO(String[] engines, String[] transmissions, String[] seats) {
     this.engines = engines;
     this.transmissions = transmissions;
     this.seats = seats;
-  }
-
-  public String[] getModels() {
-    return models;
   }
 
   public String[] getEngines() {

@@ -1,12 +1,12 @@
 package presentationLayer;
 
-import applicationLayer.Configuration;
-import applicationLayer.GetConfiguration;
-import applicationLayer.SubConfiguration;
+import applicationLayer.model.ConfigurationDTO;
+import applicationLayer.ConfigurationService;
+import applicationLayer.model.SubConfigurationDTO;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import presentationLayer.Model.AvailableConfiguration;
-import presentationLayer.Model.SelectedConfiguration;
+import presentationLayer.model.AvailableConfiguration;
+import presentationLayer.model.SelectedConfiguration;
 
 public class Controller {
 
@@ -23,17 +23,15 @@ public class Controller {
     selectedConfiguration.addObserver(view);
 
     System.out.println("Call gegen ApplicationLayer  --> getAllConfiguration Data");
-    Configuration configuration = GetConfiguration.getConfiguration();
-    availableConfiguration.init(configuration.getModels(), configuration.getEngines(), configuration.getTransmissions(), configuration.getSeats());
+    ConfigurationDTO configurationDTO = ConfigurationService.getConfiguration();
+    availableConfiguration.init(configurationDTO.getModels(), configurationDTO.getEngines(),
+        configurationDTO.getTransmissions(), configurationDTO.getSeats());
 
     this.view.addModelSelectionListener(new ModelComboBoxListener());
     this.view.addEngineSelectionListener(new EngineComboBoxListener());
     this.view.addGearSelectionListener(new TransmissionComboBoxListener());
     this.view.addSeatsSelectionListener(new SeatsComboBoxListener());
 
-    view.setDefaultBackgroundComboBoxEngines();
-    view.setDefaultBackgroundComboBoxTransmissions();
-    view.setDefaultBackgroundComboBoxSeats();
     view.setVisible(true);
 
   }
@@ -51,15 +49,15 @@ public class Controller {
   private void updateComboBoxes(String model) {
     System.out.println("This method should update all ComboBoxes according to model: " + model);
     System.out.println("Call gegen Application Layer --> Get Configuration for model");
-    SubConfiguration subConfiguration = GetConfiguration.getConfiguration(model);
-    availableConfiguration.update(subConfiguration.getEngines(), subConfiguration.getTransmissions(), subConfiguration.getSeats());
+    SubConfigurationDTO subConfigurationDTO = ConfigurationService.getConfiguration(model);
+    availableConfiguration.update(subConfigurationDTO.getEngines(),
+        subConfigurationDTO.getTransmissions(), subConfigurationDTO.getSeats());
   }
 
   // ItemListener for all ComboBoxes
 
   class ModelComboBoxListener implements ItemListener {
 
-    @Override
     public void itemStateChanged(ItemEvent e) {
       if (e.getStateChange() == ItemEvent.SELECTED) {
         System.out.println("Model changed");              // remove Later
