@@ -15,17 +15,19 @@ public class Controller {
   private final View view;
   private final AvailableConfiguration availableConfiguration;
   private final SelectedConfiguration selectedConfiguration;
+  private final ConfigurationService configurationService;
 
   public Controller(View view, AvailableConfiguration availableConfiguration,
                     SelectedConfiguration selectedConfiguration) {
     this.view = view;
     this.availableConfiguration = availableConfiguration;
     this.selectedConfiguration = selectedConfiguration;
+    this.configurationService = new ConfigurationService();
     availableConfiguration.addObserver(view);
     selectedConfiguration.addObserver(view);
 
     System.out.println("Call gegen ApplicationLayer  --> getAllConfiguration Data");
-    ConfigurationDTO configurationDTO = ConfigurationService.getConfiguration();
+    ConfigurationDTO configurationDTO = configurationService.getSubConfiguration();
     availableConfiguration.init(configurationDTO.getModels(), configurationDTO.getEngines(),
         configurationDTO.getTransmissions(), configurationDTO.getSeats());
 
@@ -52,7 +54,7 @@ public class Controller {
   private void updateComboBoxes(String model) {
     System.out.println("This method should update all ComboBoxes according to model: " + model);
     System.out.println("Call gegen Application Layer --> Get Configuration for model");
-    SubConfigurationDTO subConfigurationDTO = ConfigurationService.getConfiguration(model);
+    SubConfigurationDTO subConfigurationDTO = configurationService.getSubConfiguration(model);
     // update selected options if they are not available anymore
     for (String engine : subConfigurationDTO.getEngines()) {
       if (engine.equals(selectedConfiguration.getEngine())) {

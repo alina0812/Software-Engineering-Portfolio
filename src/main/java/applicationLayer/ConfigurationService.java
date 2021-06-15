@@ -2,39 +2,56 @@ package applicationLayer;
 
 import applicationLayer.model.ConfigurationDTO;
 import applicationLayer.model.SubConfigurationDTO;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 import dataAccessLayer.model.ConfigurationDAO;
 import dataAccessLayer.model.Engine;
 import dataAccessLayer.model.Model;
-import dataAccessLayer.ReadJson;
 import dataAccessLayer.model.Seat;
 import dataAccessLayer.model.Transmission;
+import dataAccessLayer.ReadJson;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 
 public class ConfigurationService {
 
+  private final ReadJson readJson;
+  private final HashMap<String, SubConfigurationDTO> subConfigurationDTOHashMap;
+  private final HashMap<String, Integer> modelPriceHashMap;
+  private final HashMap<String, Integer> enginePriceHashMap;
+  private final HashMap<String, Integer> transmissionPriceHashMap;
+  private final HashMap<String, Integer> seatsPriceMap;
 
-  public static ConfigurationDTO getConfiguration() {
-    ReadJson.load_data();
-    ConfigurationDAO configurationDAO = ReadJson.getConfigurationDTO();
+  public ConfigurationService() {
+    readJson = new ReadJson();
+    readJson.load_data();
+    subConfigurationDTOHashMap = new HashMap<String, SubConfigurationDTO>();
+    modelPriceHashMap = new HashMap<>();
+    enginePriceHashMap = new HashMap<>();
+    transmissionPriceHashMap = new HashMap<>();
+    seatsPriceMap = new HashMap<>();
+  }
+
+  public ConfigurationDTO getSubConfiguration() {
+
+    // Get all ConfigurationData
+    ConfigurationDAO configurationDAO = readJson.getConfigurationDTO();
     List<Model> modelList = configurationDAO.getModels();
     List<Engine> engineList = configurationDAO.getEngines();
     List<Transmission> transmissionList = configurationDAO.getTransmissions();
     List<Seat> seatList = configurationDAO.getSeats();
-    //TODO: Singelton pattern
+
     String[] models = new String[modelList.size()];
     String[] engines = new String[engineList.size()];
     String[] transmissions = new String[transmissionList.size()];
     String[] seats = new String[seatList.size()];
-    //TODO: counter austauschen: gibts da noch andere, schönere möglichkeiten?
+
     int counter = 0;
-
-
     Iterator iModel = modelList.iterator();
     while (iModel.hasNext()) {
       Model model = (Model) iModel.next();
       models[counter] = model.getName();
+      modelPriceHashMap.put(model.getName(), model.getPrice());
       counter++;
     }
     counter = 0;
@@ -42,6 +59,7 @@ public class ConfigurationService {
     while (iEngine.hasNext()) {
       Engine engine = (Engine) iEngine.next();
       engines[counter] = engine.getName();
+      enginePriceHashMap.put(engine.getName(), engine.getPrice());
       counter++;
     }
     counter = 0;
@@ -49,6 +67,7 @@ public class ConfigurationService {
     while (iTransmission.hasNext()) {
       Transmission transmission = (Transmission) iTransmission.next();
       transmissions[counter] = transmission.getName();
+      transmissionPriceHashMap.put(transmission.getName(), transmission.getPrice());
       counter++;
     }
     counter = 0;
@@ -56,51 +75,28 @@ public class ConfigurationService {
     while (iSeat.hasNext()) {
       Seat seat = (Seat) iSeat.next();
       seats[counter] = seat.getName();
+      seatsPriceMap.put(seat.getName(), seat.getPrice());
       counter++;
     }
 
-
+    //config will be returned
     ConfigurationDTO config = new ConfigurationDTO(models, engines, transmissions, seats);
-    return config;
-  }
 
 
-  public static SubConfigurationDTO getConfiguration(String model) {
-    ReadJson.load_data();
-    ConfigurationDAO configurationDAO = ReadJson.getConfigurationDTO();
-    List<Model> modelList = configurationDAO.getModels();
-    List<Engine> engineList = configurationDAO.getEngines();
-    List<Transmission> transmissionList = configurationDAO.getTransmissions();
-    List<Seat> seatList = configurationDAO.getSeats();
+    //fill SubConfiguration-HashMap for easiert access to subconfigurations
+    subConfigurationDTOHashMap.put("", new SubConfigurationDTO(config.getEngines(),
+        config.getTransmissions(), config.getSeats()));
+    subConfigurationDTOHashMap.put(null, new SubConfigurationDTO(config.getEngines(),
+        config.getTransmissions(), config.getSeats()));
+
     List<String> compatible = new ArrayList<String>();
 
+    for (Model m : modelList) {
+      int modelId = m.getModel_id();
 
-    if (model == null || model.equals("")) {
-      ConfigurationDTO config = ConfigurationService.getConfiguration();
-      String[] config_engines = config.getEngines();
-      String[] config_transmissions = config.getTransmissions();
-      String[] config_seats = config.getSeats();
-      SubConfigurationDTO subConfig = new SubConfigurationDTO(config_engines, config_transmissions, config_seats);
-
-      return subConfig;
-    } else {
-
-      int modelId = 0;
-      int counter = 0;
-      for (Model m : modelList) {
-        if (model.equals(m.getName())) {
-          modelId = m.getModel_id();
-        }
-      }
-
-      if (modelId == 0) {
-        return null;
-        //TODO: exception falseModelName
-      }
-
-      Iterator iEngine = engineList.iterator();
-      while (iEngine.hasNext()) {
-        Engine engine = (Engine) iEngine.next();
+      Iterator iEngine2 = engineList.iterator();
+      while (iEngine2.hasNext()) {
+        Engine engine = (Engine) iEngine2.next();
         int[] compatible_with = engine.getCompatible_with();
         for (int i : compatible_with) {
           if (i == modelId) {
@@ -108,12 +104,12 @@ public class ConfigurationService {
           }
         }
       }
-      String[] engines = compatible.toArray(new String[0]);
+      String[] engines2 = compatible.toArray(new String[0]);
       compatible.clear();
 
-      Iterator iTransmission = transmissionList.iterator();
-      while (iTransmission.hasNext()) {
-        Transmission transmission = (Transmission) iTransmission.next();
+      Iterator iTransmission2 = transmissionList.iterator();
+      while (iTransmission2.hasNext()) {
+        Transmission transmission = (Transmission) iTransmission2.next();
         int[] compatible_with = transmission.getCompatible_with();
         for (int i : compatible_with) {
           if (i == modelId) {
@@ -121,12 +117,12 @@ public class ConfigurationService {
           }
         }
       }
-    String[] transmissions = compatible.toArray(new String[0]);
-    compatible.clear();
+      String[] transmissions2 = compatible.toArray(new String[0]);
+      compatible.clear();
 
-      Iterator iSeat = seatList.iterator();
-      while (iSeat.hasNext()) {
-        Seat seat = (Seat) iSeat.next();
+      Iterator iSeat2 = seatList.iterator();
+      while (iSeat2.hasNext()) {
+        Seat seat = (Seat) iSeat2.next();
         int[] compatible_with = seat.getCompatible_with();
         for (int i : compatible_with) {
           if (i == modelId) {
@@ -134,11 +130,19 @@ public class ConfigurationService {
           }
         }
       }
-    String[] seats = compatible.toArray(new String[0]);
-    compatible.clear();
+      String[] seats2 = compatible.toArray(new String[0]);
+      compatible.clear();
 
-    SubConfigurationDTO subConfig = new SubConfigurationDTO(engines, transmissions, seats);
-    return subConfig;
+      SubConfigurationDTO subConfig = new SubConfigurationDTO(engines2, transmissions2, seats2);
+
+      subConfigurationDTOHashMap.put(m.getName(), subConfig);
     }
+    return config;
   }
+
+
+  public SubConfigurationDTO getSubConfiguration(String model) {
+    return subConfigurationDTOHashMap.get(model);
+  }
+
 }

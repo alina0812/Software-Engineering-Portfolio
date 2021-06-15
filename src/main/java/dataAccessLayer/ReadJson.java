@@ -1,6 +1,5 @@
 package dataAccessLayer;
 
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dataAccessLayer.model.ConfigurationDAO;
 import java.io.File;
@@ -10,13 +9,14 @@ import java.io.IOException;
 
 public class ReadJson {
 
-  private static ConfigurationDAO configurationDAO;
+  private ConfigurationDAO configurationDAO;
 
-  private ReadJson() {}
+  public ReadJson() {
+  }
 
 
-  public static void load_data() {
-    if (configurationDAO == null){
+  public void load_data() {
+    if (configurationDAO == null) {
       File jsonInputFile = new File("Data.json");
       ObjectMapper objectMapper = new ObjectMapper();
       try {
@@ -30,7 +30,7 @@ public class ReadJson {
     }
   }
 
-  public static ConfigurationDAO getConfigurationDTO() {
+  public ConfigurationDAO getConfigurationDTO() {
     return configurationDAO;
   }
 
