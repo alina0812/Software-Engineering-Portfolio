@@ -11,13 +11,38 @@ import java.io.IOException;
 import presentationLayer.model.AvailableConfiguration;
 import presentationLayer.model.SelectedConfiguration;
 
+/**
+ * Controller of MVC pattern <br>
+ * Connecting view, models and ConfigurationService
+ */
 public class Controller {
 
+  /**
+   * View of the application
+   */
   private final View view;
+  /**
+   * model AvailableConfiguration to store all available options according to the selected model in the view
+   */
   private final AvailableConfiguration availableConfiguration;
+  /**
+   * model SelectedConfiguration to save the configuration selected in the view
+   */
   private final SelectedConfiguration selectedConfiguration;
+  /**
+   * ConfigurationService (in ApplicationLayer) <br>
+   * Used to get all configuration data, calculate the price or to get subconfiguration data for one model
+   */
   private final ConfigurationService configurationService;
 
+  /**
+   *
+   * @param view instance of the view (created in the static void main method)
+   * @param availableConfiguration instance of the model availableConfiguration (created in the static void main method)
+   * @param selectedConfiguration instance of the model selectedConfiguration (created in the static void main method)
+   * @param configurationService instance of the configurationService to connect to the application layer (created in the static void main method)
+   * @throws IOException if JSON file is not found or in a wrong syntax
+   */
   public Controller(View view, AvailableConfiguration availableConfiguration,
                     SelectedConfiguration selectedConfiguration,
                     ConfigurationService configurationService) throws IOException {

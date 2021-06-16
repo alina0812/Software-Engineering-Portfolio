@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+
 public class ConfigurationService {
 
   private final ReadJson readJson;
@@ -43,7 +44,6 @@ public class ConfigurationService {
 
     return modelPrice + enginePrice + transmissionPrice + seatsPrice;
   }
-
 
   public ConfigurationDTO getConfiguration() throws IOException {
 
