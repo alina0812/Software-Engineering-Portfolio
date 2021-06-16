@@ -34,6 +34,11 @@ public class ConfigurationService {
     seatsPriceMap = new HashMap<>();
   }
 
+  public int calculatePrice(String name){
+    return 0;
+  }
+
+
   public ConfigurationDTO getSubConfiguration() throws IOException {
 
     // Get all ConfigurationData

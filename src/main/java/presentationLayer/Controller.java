@@ -51,6 +51,7 @@ public class Controller {
     // model.getEngine(), model.getGear(), model.getSeat());
     System.out.println("Preis ist: " + p);  //// remove if method is fully implemented and working
     selectedConfiguration.setPrice(p);
+    configurationService.calculatePrice(selectedConfiguration.getEngine());
   }
 
   private void updateComboBoxes(String model) {
