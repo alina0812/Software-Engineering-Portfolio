@@ -20,9 +20,22 @@
             "model_id": 103,
             "name": "Mercedes",
             "price": 45000
+        },
+        {
+            "model_id": 104,
+            "name": "BMW",
+            "price": 40000
         }
     ],
     "engines": [
+        {
+            "model_id": 114,
+            "name": "1.4 TDI",
+            "price": 2000,
+            "compatible_with": [
+                101
+            ]
+        },
         {
             "model_id": 110,
             "name": "2.0 TDI",
@@ -33,17 +46,45 @@
             ]
         },
         {
+            "model_id": 110,
+            "name": "3.0 V6",
+            "price": 5000,
+            "compatible_with": [
+                100,
+                103,
+                104
+
+            ]
+        },
+        {
             "model_id": 111,
             "name": "4.0 V8",
             "price": 8000,
+            "compatible_with": [
+                103,
+                104
+            ]
+        },
+        {
+            "model_id": 113,
+            "name": "6.0 V12",
+            "price": 14000,
             "compatible_with": [
                 103
             ]
         },
         {
             "model_id": 112,
-            "name": "3.5 Boxer",
+            "name": "3.0 Boxer",
             "price": 7000,
+            "compatible_with": [
+                102
+            ]
+        },
+        {
+            "model_id": 115,
+            "name": "3.5 Boxer Turbo",
+            "price": 10000,
             "compatible_with": [
                 102
             ]
@@ -57,7 +98,8 @@
             "compatible_with": [
                 100,
                 102,
-                103
+                103,
+                104
             ]
         },
         {
@@ -68,16 +110,18 @@
                 100,
                 101,
                 102,
-                103
+                103,
+                104
             ]
         },
         {
             "model_id": 122,
-            "name": "Doppelkupplungsgetriebe",
+            "name": "Doppelkupplung",
             "price": 8000,
             "compatible_with": [
                 102,
-                103
+                103,
+                104
             ]
         }
     ],
@@ -88,7 +132,10 @@
             "price": 500,
             "compatible_with": [
                 100,
-                101
+                101,
+                102,
+                103,
+                104
             ]
         },
         {
@@ -97,9 +144,9 @@
             "price": 1000,
             "compatible_with": [
                 100,
-                101,
                 102,
-                103
+                103,
+                104
             ]
         },
         {
@@ -108,7 +155,8 @@
             "price": 500,
             "compatible_with": [
                 102,
-                103
+                103,
+                104
             ]
         }
     ]
