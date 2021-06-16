@@ -160,8 +160,8 @@ public class View extends JFrame implements Observer {
       char c = 8364; //Ascii code
       String s = NumberFormat.getInstance().format(price); // Tausender-Punkt
       priceResult.setText(s + " " + c);
-    } else if (!priceResult.getText().equals("")) {
-      priceResult.setText("");
+    } else if (priceResult.getText() != null || !priceResult.getText().equals("")) {
+      priceResult.setText(null);
     }
   }
 

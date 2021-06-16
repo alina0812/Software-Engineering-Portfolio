@@ -20,7 +20,7 @@ public class ConfigurationService {
   private final HashMap<String, Integer> transmissionPriceHashMap;
   private final HashMap<String, Integer> seatsPriceMap;
 
-  public ConfigurationService(ReadJson readJson) throws IOException {
+  public ConfigurationService(ReadJson readJson) {
     this.readJson = readJson;
     subConfigurationDTOHashMap = new HashMap<>();
     modelPriceHashMap = new HashMap<>();
@@ -45,11 +45,10 @@ public class ConfigurationService {
   }
 
 
-  public ConfigurationDTO getSubConfiguration() throws IOException {
+  public ConfigurationDTO getConfiguration() throws IOException {
 
     // Get all ConfigurationData
-    readJson.load_data();
-    ConfigurationDAO configurationDAO = readJson.getConfigurationDTO();
+    ConfigurationDAO configurationDAO = readJson.load_data();
     List<SuperOption> modelList = configurationDAO.getModels();
     List<SubOption> engineList = configurationDAO.getEngines();
     List<SubOption> transmissionList = configurationDAO.getTransmissions();
@@ -130,7 +129,7 @@ public class ConfigurationService {
       counter++;
     }
 
-    // Create object with all models, objects and seats
+    // ConfigurationDTO object with all models, objects and seats
     // config will be returned
     ConfigurationDTO config = new ConfigurationDTO(models, engines, transmissions, seats);
 

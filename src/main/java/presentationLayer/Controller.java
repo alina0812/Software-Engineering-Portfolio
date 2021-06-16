@@ -28,7 +28,7 @@ public class Controller {
     availableConfiguration.addObserver(view);
     selectedConfiguration.addObserver(view);
 
-    ConfigurationDTO configurationDTO = configurationService.getSubConfiguration();
+    ConfigurationDTO configurationDTO = configurationService.getConfiguration();
     availableConfiguration.init(configurationDTO.getModels(), configurationDTO.getEngines(),
         configurationDTO.getTransmissions(), configurationDTO.getSeats());
 

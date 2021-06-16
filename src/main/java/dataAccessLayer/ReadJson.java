@@ -9,25 +9,14 @@ import java.io.IOException;
 
 public class ReadJson {
 
-  private ConfigurationDAO configurationDAO;
-
-  public ReadJson() {
-  }
-
-
-  public void load_data() throws IOException {
-    if (configurationDAO == null) {
-      File jsonInputFile = new File("Data.json");
-      ObjectMapper objectMapper = new ObjectMapper();
-      if (!jsonInputFile.exists()) {
-        throw new FileNotFoundException("File 'Data.json' not found");
-      }
-      configurationDAO = objectMapper.readValue(jsonInputFile, ConfigurationDAO.class);
+  public ConfigurationDAO load_data() throws IOException {
+    File jsonInputFile = new File("Data.json");
+    ObjectMapper objectMapper = new ObjectMapper();
+    if (!jsonInputFile.exists()) {
+      throw new FileNotFoundException("File 'Data.json' not found");
     }
-  }
-
-  public ConfigurationDAO getConfigurationDTO() {
-    return configurationDAO;
+    // Mapping into class ConfigurationDAO
+    return objectMapper.readValue(jsonInputFile, ConfigurationDAO.class);
   }
 
 }
