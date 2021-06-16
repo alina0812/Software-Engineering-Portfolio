@@ -3,27 +3,27 @@
     "models": [
         {
             "model_id": 100,
-            "name": "Passat",
+            "name": "VW Passat",
             "price": 20000
         },
         {
             "model_id": 101,
-            "name": "Golf",
+            "name": "VW Golf",
             "price": 10000
         },
         {
             "model_id": 102,
-            "name": "Porsche",
+            "name": "Porsche 911",
             "price": 80000
         },
         {
             "model_id": 103,
-            "name": "Mercedes",
+            "name": "Mercedes S-Klasse",
             "price": 45000
         },
         {
             "model_id": 104,
-            "name": "BMW",
+            "name": "BMW 4er",
             "price": 40000
         }
     ],
@@ -133,9 +133,7 @@
             "compatible_with": [
                 100,
                 101,
-                102,
-                103,
-                104
+                102
             ]
         },
         {
