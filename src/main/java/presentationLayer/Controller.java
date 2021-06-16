@@ -1,9 +1,8 @@
 package presentationLayer;
 
-import applicationLayer.model.ConfigurationDTO;
 import applicationLayer.ConfigurationService;
+import applicationLayer.model.ConfigurationDTO;
 import applicationLayer.model.SubConfigurationDTO;
-import dataAccessLayer.ReadJson;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -20,15 +19,15 @@ public class Controller {
   private final ConfigurationService configurationService;
 
   public Controller(View view, AvailableConfiguration availableConfiguration,
-                    SelectedConfiguration selectedConfiguration) throws IOException {
+                    SelectedConfiguration selectedConfiguration,
+                    ConfigurationService configurationService) throws IOException {
     this.view = view;
     this.availableConfiguration = availableConfiguration;
     this.selectedConfiguration = selectedConfiguration;
-    this.configurationService = new ConfigurationService();
+    this.configurationService = configurationService;
     availableConfiguration.addObserver(view);
     selectedConfiguration.addObserver(view);
 
-    System.out.println("Call gegen ApplicationLayer  --> getAllConfiguration Data");
     ConfigurationDTO configurationDTO = configurationService.getSubConfiguration();
     availableConfiguration.init(configurationDTO.getModels(), configurationDTO.getEngines(),
         configurationDTO.getTransmissions(), configurationDTO.getSeats());
@@ -40,24 +39,17 @@ public class Controller {
     this.view.addResetButtonActionListener(new ResetButtonListener());
 
     view.setVisible(true);
-
   }
 
   private void calculatePrice() {
-    int p = 0;              // remove later
 
-    System.out.println("Call gegen Application Layer --> Calculate Price");
-    //int p = ApplicationLayerClass.calculatePrice(model.getModel(),
-    // model.getEngine(), model.getGear(), model.getSeat());
-    p = configurationService.calculatePrice(selectedConfiguration.getModel(), selectedConfiguration.getEngine(),selectedConfiguration.getTransmission(), selectedConfiguration.getSeats());
-    System.out.println("Preis ist: " + p);  //// remove if method is fully implemented and working
+    int p = configurationService.calculatePrice(selectedConfiguration.getModel(), selectedConfiguration.getEngine(),
+        selectedConfiguration.getTransmission(), selectedConfiguration.getSeats());
     selectedConfiguration.setPrice(p);
 
   }
 
   private void updateComboBoxes(String model) {
-    System.out.println("This method should update all ComboBoxes according to model: " + model);
-    System.out.println("Call gegen Application Layer --> Get Configuration for model");
     SubConfigurationDTO subConfigurationDTO = configurationService.getSubConfiguration(model);
     // update selected options if they are not available anymore
     for (String engine : subConfigurationDTO.getEngines()) {
@@ -88,7 +80,6 @@ public class Controller {
 
     public void itemStateChanged(ItemEvent e) {
       if (e.getStateChange() == ItemEvent.SELECTED) {
-        System.out.println("Model changed");              // remove Later
         selectedConfiguration.setModel((String) e.getItem());
         Controller.this.updateComboBoxes((String) e.getItem());
         if (selectedConfiguration.areModelEngineTransmissionSeatsSet()) {
@@ -150,28 +141,27 @@ public class Controller {
     }
   }
 
-    class SeatsComboBoxListener implements ItemListener {
+  class SeatsComboBoxListener implements ItemListener {
 
-      @Override
-      public void itemStateChanged(ItemEvent e) {
-        if (e.getStateChange() == ItemEvent.SELECTED || e.getItem() == null) {
-          System.out.println("Seats changed");
-          selectedConfiguration.setSeats((String) e.getItem());
-          view.setDefaultBackgroundComboBoxSeats();
-          if (selectedConfiguration.areModelEngineTransmissionSeatsSet()) {
-            Controller.this.calculatePrice();
-            view.setMessageText(null);
-          } else {
-            if (selectedConfiguration.getPrice() != null) {
-              selectedConfiguration.setPrice(null);
-            }
-            if (view.isMessageBoxEmpty()) {
-              view.setMessageText("<html>Bitte wählen Sie eine Fahrzeugkonfiguration aus<html>");
-            }
+    @Override
+    public void itemStateChanged(ItemEvent e) {
+      if (e.getStateChange() == ItemEvent.SELECTED || e.getItem() == null) {
+        selectedConfiguration.setSeats((String) e.getItem());
+        view.setDefaultBackgroundComboBoxSeats();
+        if (selectedConfiguration.areModelEngineTransmissionSeatsSet()) {
+          Controller.this.calculatePrice();
+          view.setMessageText(null);
+        } else {
+          if (selectedConfiguration.getPrice() != null) {
+            selectedConfiguration.setPrice(null);
+          }
+          if (view.isMessageBoxEmpty()) {
+            view.setMessageText("<html>Bitte wählen Sie eine Fahrzeugkonfiguration aus<html>");
           }
         }
       }
     }
+  }
 
   class ResetButtonListener implements ActionListener {
 

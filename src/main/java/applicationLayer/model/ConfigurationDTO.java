@@ -1,32 +1,15 @@
 package applicationLayer.model;
 
-public class ConfigurationDTO {
+public class ConfigurationDTO extends SubConfigurationDTO {
 
-  private String[] models;
-  private String[] engines;
-  private String[] transmissions;
-  private String[] seats;
+  private final String[] models;
 
   public ConfigurationDTO(String[] models, String[] engines, String[] transmissions, String[] seats) {
+    super(engines, transmissions, seats);
     this.models = models;
-    this.engines = engines;
-    this.transmissions = transmissions;
-    this.seats = seats;
   }
 
   public String[] getModels() {
     return models;
-  }
-
-  public String[] getEngines() {
-    return engines;
-  }
-
-  public String[] getTransmissions() {
-    return transmissions;
-  }
-
-  public String[] getSeats() {
-    return seats;
   }
 }

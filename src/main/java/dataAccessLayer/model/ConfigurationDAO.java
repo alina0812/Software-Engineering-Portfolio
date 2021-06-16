@@ -4,24 +4,24 @@ import java.util.ArrayList;
 
 public class ConfigurationDAO {
 
-  private ArrayList<Model> models;
-  private ArrayList<Engine> engines;
-  private ArrayList<Transmission> transmissions;
-  private ArrayList<Seat> seats;
+  private ArrayList<SuperOption> models;
+  private ArrayList<SubOption> engines;
+  private ArrayList<SubOption> transmissions;
+  private ArrayList<SubOption> seats;
 
-  public ArrayList<Model> getModels() {
+  public ArrayList<SuperOption> getModels() {
     return models;
   }
 
-  public ArrayList<Engine> getEngines() {
+  public ArrayList<SubOption> getEngines() {
     return engines;
   }
 
-  public ArrayList<Transmission> getTransmissions() {
+  public ArrayList<SubOption> getTransmissions() {
     return transmissions;
   }
 
-  public ArrayList<Seat> getSeats() {
+  public ArrayList<SubOption> getSeats() {
     return  seats;
   }
 

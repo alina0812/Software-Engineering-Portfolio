@@ -169,7 +169,7 @@ public class View extends JFrame implements Observer {
     messages.setText(text);
   }
 
-  public boolean isMessageBoxEmpty(){
+  public boolean isMessageBoxEmpty() {
     return messages.getText() == null || messages.getText().equals("");
   }
 
@@ -208,11 +208,9 @@ public class View extends JFrame implements Observer {
   }
 
   public void update(Observable o, Object arg) {
-    System.out.println("Observer reached");
     // ComboBoxes
     if (o instanceof AvailableConfiguration) {
-      System.out.println("Arg is AvailableConfiguration");
-      if (this.comboBoxModels.getItemCount() == 0) {            // --> All Boxes are still empty
+      if (this.comboBoxModels.getItemCount() == 0) {         // --> All Boxes are still empty
         // Setup ComboBoxes
         String[] models = ((AvailableConfiguration) arg).getModels();
         this.comboBoxModels.addItem("");
@@ -236,7 +234,6 @@ public class View extends JFrame implements Observer {
         }
         //Update ComboBoxes
       } else {
-        System.out.println("update ComboBoxes in view");
 
         String selectedEngine = (String) comboBoxEngines.getSelectedItem();
         String selectedTransmission = (String) comboBoxTransmissions.getSelectedItem();
@@ -298,7 +295,6 @@ public class View extends JFrame implements Observer {
       }
       // Update Price
     } else if (o instanceof SelectedConfiguration) {
-      System.out.println("Preis eintragen");
       this.setPriceResult(((SelectedConfiguration) arg).getPrice());
 
       //the following is only important for resetting
