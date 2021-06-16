@@ -44,14 +44,15 @@ public class Controller {
   }
 
   private void calculatePrice() {
-    int p = 0;                              // remove later
+    int p = 0;              // remove later
 
     System.out.println("Call gegen Application Layer --> Calculate Price");
     //int p = ApplicationLayerClass.calculatePrice(model.getModel(),
     // model.getEngine(), model.getGear(), model.getSeat());
+    p = configurationService.calculatePrice(selectedConfiguration.getModel(), selectedConfiguration.getEngine(),selectedConfiguration.getTransmission(), selectedConfiguration.getSeats());
     System.out.println("Preis ist: " + p);  //// remove if method is fully implemented and working
     selectedConfiguration.setPrice(p);
-    configurationService.calculatePrice(selectedConfiguration.getEngine());
+
   }
 
   private void updateComboBoxes(String model) {

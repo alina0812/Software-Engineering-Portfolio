@@ -34,8 +34,19 @@ public class ConfigurationService {
     seatsPriceMap = new HashMap<>();
   }
 
-  public int calculatePrice(String name){
-    return 0;
+  public int calculatePrice(String model, String engine, String transmission, String seats){
+
+    int modelPrice;
+    int enginePrice;
+    int transmissionPrice;
+    int seatsPrice;
+
+    modelPrice = modelPriceHashMap.get(model);
+    enginePrice = enginePriceHashMap.get(engine);
+    transmissionPrice = transmissionPriceHashMap.get(transmission);
+    seatsPrice = seatsPriceMap.get(seats);
+
+    return modelPrice + enginePrice + transmissionPrice + seatsPrice;
   }
 
 
