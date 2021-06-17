@@ -41,25 +41,25 @@ public class View extends JFrame implements Observer {
   /**
    * Combo box showing all selectable models
    */
-  private final JComboBox<String> comboBoxModels;
+  private final JComboBox<StringWrapper> comboBoxModels;
 
   /**
    * Combo box showing all selectable engines according to the selected model.
    * If no model is selected, all engines are shown.
    */
-  private final JComboBox<String> comboBoxEngines;
+  private final JComboBox<StringWrapper> comboBoxEngines;
 
   /**
    * Combo box showing all selectable transmissions according to the selected model.
    * If no model is selected, all transmissions are shown.
    */
-  private final JComboBox<String> comboBoxTransmissions;
+  private final JComboBox<StringWrapper> comboBoxTransmissions;
 
   /**
    * Combo box showing all selectable seats according to the selected model.
    * If no model is selected, all seats are shown.
    */
-  private final JComboBox<String> comboBoxSeats;
+  private final JComboBox<StringWrapper> comboBoxSeats;
 
   /**
    * Label that shows the calculated price if a model, engine, transmission and seats is selected in the combo boxes
@@ -173,6 +173,7 @@ public class View extends JFrame implements Observer {
 
   /**
    * Creates GridBagConstraints for the header field
+   *
    * @return GridBagConstraints for the header
    */
   private GridBagConstraints createGridBagConstraintsHeader() {
@@ -185,6 +186,7 @@ public class View extends JFrame implements Observer {
 
   /**
    * Creates GridBagConstraints for the combo boxes and the according labels
+   *
    * @param gridx position at the x-axis
    * @param gridy position at the y-axis
    * @return GridBagConstraints for the combo box / label
@@ -200,6 +202,7 @@ public class View extends JFrame implements Observer {
 
   /**
    * Creates a GridBagConstraint for the message box
+   *
    * @return GridBagConstraints for the message box
    */
   private GridBagConstraints createGridBagConstraintsMessageBox() {
@@ -211,6 +214,7 @@ public class View extends JFrame implements Observer {
 
   /**
    * Creates a GridBagConstraint for the reset button
+   *
    * @return GridBagConstraints for the reset button
    */
   private GridBagConstraints createGridBagConstraintsResetButton() {
@@ -222,20 +226,22 @@ public class View extends JFrame implements Observer {
   /**
    * Sets the price label to the calculated price or to null if not all combo boxes are set.
    * Adds the euro sign and the thousands separator to the number
+   *
    * @param price calculated price for the selected options in the combo boxes or null if not all combo boxes are set
    */
   public void setPriceResult(Integer price) {
     if (price != null) {
-      char c = 8364; //Ascii code for euro
+      char c = 8364; //Ascii code for euro sign
       String s = NumberFormat.getInstance().format(price); // thousands separator
       priceResult.setText(s + " " + c);
-    } else if (priceResult.getText() != null || !priceResult.getText().equals("")) {
+    } else if (priceResult.getText() != null) {
       priceResult.setText(null);
     }
   }
 
   /**
    * Sets the label messages to a text
+   *
    * @param text to be shown in the label 'messages'
    */
   public void setMessageText(String text) {
@@ -243,16 +249,19 @@ public class View extends JFrame implements Observer {
   }
 
   /**
-   * Checks if the label 'messages' is empty or not. If it is empty, it opens the possibility to set a new content into it.
+   * Checks if the label 'messages' is empty or not.
+   * If it is empty, it opens the possibility to set a new content into it.
+   *
    * @return true if the content of the label 'messages' is null or empty. Else returns false.
    */
   public boolean isMessageBoxEmpty() {
-    return messages.getText() == null || messages.getText().equals("");
+    return messages.getText() == null || messages.getText().isEmpty();
   }
 
   /**
    * Changes the background color of the combo box 'comboBoxEngines' to the default color.
-   * The background color of the combo box 'comboBoxModels' is never changed, so it picks the background color from there
+   * The background color of the combo box 'comboBoxModels' is never changed,
+   * so it picks the background color from there
    */
   public void setDefaultBackgroundComboBoxEngines() {
     this.comboBoxEngines.setBackground(comboBoxModels.getBackground());
@@ -277,6 +286,7 @@ public class View extends JFrame implements Observer {
 
   /**
    * Adds an item listener to the combo box 'comboBoxModels'
+   *
    * @param listenForComboBox item listener (inner class of the controller)
    */
   public void addModelSelectionListener(ItemListener listenForComboBox) {
@@ -285,6 +295,7 @@ public class View extends JFrame implements Observer {
 
   /**
    * Adds an item listener to the combo box 'comboBoxEngines'
+   *
    * @param listenForComboBox item listener (inner class of the controller)
    */
   public void addEngineSelectionListener(ItemListener listenForComboBox) {
@@ -293,6 +304,7 @@ public class View extends JFrame implements Observer {
 
   /**
    * Adds an item listener to the combo box 'comboBoxTransmissions'
+   *
    * @param listenForComboBox item listener (inner class of the controller)
    */
   public void addTransmissionSelectionListener(ItemListener listenForComboBox) {
@@ -301,6 +313,7 @@ public class View extends JFrame implements Observer {
 
   /**
    * Adds an item listener to the combo box 'comboBoxSeats'
+   *
    * @param listenForComboBox item listener (inner class of the controller)
    */
   public void addSeatsSelectionListener(ItemListener listenForComboBox) {
@@ -309,6 +322,7 @@ public class View extends JFrame implements Observer {
 
   /**
    * Adds an action listener to the button 'resetButton'
+   *
    * @param actionListener action listener (inner class of the controller)
    */
   public void addResetButtonActionListener(ActionListener actionListener) {
@@ -317,8 +331,9 @@ public class View extends JFrame implements Observer {
 
   /**
    * Called if one of the models 'AvailableConfiguration' or 'SelectedConfiguration' has changed.
-   * Updates the combo boxes and the price labels accoring to the new values
-   * @param o Observable (object of the class 'AvailableConfiguration' or 'SelectedConfiguration')
+   * Updates the combo boxes and the price labels according to the new values
+   *
+   * @param o   Observable (object of the class 'AvailableConfiguration' or 'SelectedConfiguration')
    * @param arg argument (object of the class 'AvailableConfiguration' or 'SelectedConfiguration')
    */
   public void update(Observable o, Object arg) {
@@ -327,82 +342,89 @@ public class View extends JFrame implements Observer {
       if (this.comboBoxModels.getItemCount() == 0) {         // --> All Boxes are still empty
         // Setup ComboBoxes
         String[] models = ((AvailableConfiguration) arg).getModels();
-        this.comboBoxModels.addItem("");
+        this.comboBoxModels.addItem(new StringWrapper(null));
         for (String m : models) {
-          this.comboBoxModels.addItem(m);
+          this.comboBoxModels.addItem(new StringWrapper(m));
         }
         String[] engines = ((AvailableConfiguration) arg).getEngines();
-        this.comboBoxEngines.addItem("");
+        this.comboBoxEngines.addItem(new StringWrapper(null));
         for (String e : engines) {
-          this.comboBoxEngines.addItem(e);
+          this.comboBoxEngines.addItem(new StringWrapper(e));
         }
         String[] transmissions = ((AvailableConfiguration) arg).getTransmissions();
-        comboBoxTransmissions.addItem("");
+        comboBoxTransmissions.addItem(new StringWrapper(null));
         for (String t : transmissions) {
-          this.comboBoxTransmissions.addItem(t);
+          this.comboBoxTransmissions.addItem(new StringWrapper(t));
         }
         String[] seats = ((AvailableConfiguration) arg).getSeats();
-        comboBoxSeats.addItem("");
+        comboBoxSeats.addItem(new StringWrapper(null));
         for (String s : seats) {
-          this.comboBoxSeats.addItem(s);
+          this.comboBoxSeats.addItem(new StringWrapper(s));
         }
 
         //Update ComboBoxes
       } else {
-        String selectedEngine = (String) comboBoxEngines.getSelectedItem();
-        String selectedTransmission = (String) comboBoxTransmissions.getSelectedItem();
-        String selectedSeats = (String) comboBoxSeats.getSelectedItem();
+        StringWrapper selectedEngine = (StringWrapper) comboBoxEngines.getSelectedItem();
+        StringWrapper selectedTransmission = (StringWrapper) comboBoxTransmissions.getSelectedItem();
+        StringWrapper selectedSeats = (StringWrapper) comboBoxSeats.getSelectedItem();
 
         comboBoxEngines.removeAllItems();
         comboBoxTransmissions.removeAllItems();
         comboBoxSeats.removeAllItems();
 
         String[] engines = ((AvailableConfiguration) arg).getEngines();
-        String currentSelectedEngine = null;
-        this.comboBoxEngines.addItem("");
+        StringWrapper currentSelectedEngine = null;
+        this.comboBoxEngines.addItem(new StringWrapper(null));
         for (String e : engines) {
-          this.comboBoxEngines.addItem(e);
-          if (!Objects.equals(selectedEngine, "") && Objects.equals(selectedEngine, e)) {
-            currentSelectedEngine = e;
+          StringWrapper eWrapper = new StringWrapper(e);
+          this.comboBoxEngines.addItem(eWrapper);
+          if (!Objects.equals(selectedEngine, null) && Objects.equals(selectedEngine.toString(), eWrapper.toString())) {
+            currentSelectedEngine = eWrapper;
           }
         }
         if (currentSelectedEngine != null) {
           comboBoxEngines.setSelectedItem(currentSelectedEngine);
-        } else if (!selectedEngine.equals("") && comboBoxModels.getSelectedItem() != null) {
+        } else if (selectedEngine != null && selectedEngine.toString() != null && comboBoxModels.getSelectedItem() != null) {
           comboBoxEngines.setBackground(new Color(217, 50, 50, 163));
           this.setMessageText("<html>Eine oder mehrere gewählte Optionen sind für dieses Modell nicht verfügbar. "
               + "Bitte eine neue Option wählen.<html>");
         }
         String[] transmissions = ((AvailableConfiguration) arg).getTransmissions();
-        String currentSelectedTransmission = null;
-        comboBoxTransmissions.addItem("");
+        StringWrapper currentSelectedTransmission = null;
+        comboBoxTransmissions.addItem(new StringWrapper(null));
         for (String t : transmissions) {
-          this.comboBoxTransmissions.addItem(t);
-          if (!Objects.equals(selectedTransmission, "") && Objects.equals(selectedTransmission, t)) {
-            currentSelectedTransmission = t;
+          StringWrapper tWrapper = new StringWrapper(t);
+          this.comboBoxTransmissions.addItem(tWrapper);
+          if (!Objects.equals(selectedTransmission, null)
+              && Objects.equals(selectedTransmission.toString(), tWrapper.toString())) {
+            currentSelectedTransmission = tWrapper;
           }
         }
         if (currentSelectedTransmission != null) {
           comboBoxTransmissions.setSelectedItem(currentSelectedTransmission);
-        } else if (!Objects.equals(selectedTransmission, "") && comboBoxModels.getSelectedItem() != null) {
+        } else if (selectedTransmission != null && selectedTransmission.toString() != null
+            && comboBoxModels.getSelectedItem() != null) {
           comboBoxTransmissions.setBackground(new Color(217, 50, 50, 163));
           this.setMessageText("<html>Eine oder mehrere Optionen sind für dieses Modell nicht verfügbar. "
               + "Bitte eine neue Option wählen.<html>");
         }
         String[] seats = ((AvailableConfiguration) arg).getSeats();
-        String currentSelectedSeat = null;
-        comboBoxSeats.addItem("");
+        StringWrapper currentSelectedSeat = null;
+        comboBoxSeats.addItem(new StringWrapper(null));
         for (String s : seats) {
-          this.comboBoxSeats.addItem(s);
-          if (!Objects.equals(selectedSeats, "") && Objects.equals(selectedSeats, s)) {
-            currentSelectedSeat = s;
+          StringWrapper sWrapper = new StringWrapper(s);
+          this.comboBoxSeats.addItem(sWrapper);
+          if (!Objects.equals(selectedSeats, null) && Objects.equals(selectedSeats.toString(), sWrapper.toString())) {
+            currentSelectedSeat = sWrapper;
           }
         }
         if (currentSelectedSeat != null) {
           comboBoxSeats.setSelectedItem(currentSelectedSeat);
-        } else if (!Objects.equals(selectedSeats, "") && comboBoxModels.getSelectedItem() != null) {
+        } else if (selectedSeats != null && selectedSeats.toString() != null
+            && comboBoxModels.getSelectedItem() != null) {
           comboBoxSeats.setBackground(new Color(217, 50, 50, 163));
-          this.setMessageText("<html>Eine oder mehrere gewählte Optionen sind für dieses Modell nicht verfügbar. Bitte eine neue Option wählen.<html>");
+          this.setMessageText("<html>Eine oder mehrere gewählte Optionen sind für dieses Modell nicht verfügbar. "
+              + "Bitte eine neue Option wählen.<html>");
         }
       }
 
@@ -427,6 +449,36 @@ public class View extends JFrame implements Observer {
   }
 
   /**
+   * Inner class StringWrapper <br>
+   * Used to save the value 'null' in the comboBoxes.
+   * With normal Strings, the item listeners would not be invoked if the value is set to 'null'
+   */
+  static class StringWrapper {
+    final String s;
+
+    /**
+     * Casts the String s to a object of StringWrapper containing s
+     * Important: Also 'null' is going to be casted into an object of StringWrapper
+     * Via the toString method the StringWrapper object can be casted back to a String (if it is not containing null)
+     *
+     * @param s String to be casted into the StringWrapper
+     */
+    public StringWrapper(String s) {
+      this.s = s;
+    }
+
+    /**
+     * toString method to cast a StringWrapper object back to the original String
+     *
+     * @return s
+     */
+    @Override
+    public String toString() {
+      return s;
+    }
+  }
+
+  /**
    * Inner class to add a cell renderer to the combo boxes.
    * Changes the color of the popup menu to a wished color even if the background of the combo box is not default.
    */
@@ -439,14 +491,11 @@ public class View extends JFrame implements Observer {
     public Component getListCellRendererComponent(JList<?> list, Object value, int index,
                                                   boolean isSelected, boolean cellHasFocus) {
 
-      // Empty string would be ignored --> replace with empty ascii character
-      if (value == null || value.toString().equals("")) {
-        char c = 0;
-        value = Character.toString(c);
+      if (value != null) {
+        setText(value.toString());
+      } else {
+        setText(null);
       }
-
-      // background color of the popup menu overwrites background of comboBox
-      setText(value.toString());
       Color background = Color.WHITE;
 
       JList.DropLocation dropLocation = list.getDropLocation();

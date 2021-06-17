@@ -130,8 +130,13 @@ public class Controller {
      */
     public void itemStateChanged(ItemEvent e) {
       if (e.getStateChange() == ItemEvent.SELECTED) {
-        selectedConfiguration.setModel((String) e.getItem());
-        Controller.this.updateComboBoxes((String) e.getItem());
+        if (e.getItem() == null) {
+          selectedConfiguration.setModel(null);
+          Controller.this.updateComboBoxes(null);
+        } else {
+          selectedConfiguration.setModel(e.getItem().toString());
+          Controller.this.updateComboBoxes(e.getItem().toString());
+        }
         if (selectedConfiguration.areModelEngineTransmissionSeatsSet()) {
           Controller.this.calculatePrice();
           view.setMessageText(null);
@@ -162,7 +167,11 @@ public class Controller {
     @Override
     public void itemStateChanged(ItemEvent e) {
       if (e.getStateChange() == ItemEvent.SELECTED) {
-        selectedConfiguration.setEngine((String) e.getItem());
+        if (e.getItem() == null) {
+          selectedConfiguration.setEngine(null);
+        } else {
+          selectedConfiguration.setEngine(e.getItem().toString());
+        }
         view.setDefaultBackgroundComboBoxEngines();
         if (selectedConfiguration.areModelEngineTransmissionSeatsSet()) {
           Controller.this.calculatePrice();
@@ -194,7 +203,11 @@ public class Controller {
     @Override
     public void itemStateChanged(ItemEvent e) {
       if (e.getStateChange() == ItemEvent.SELECTED) {
-        selectedConfiguration.setTransmission((String) e.getItem());
+        if (e.getItem() == null) {
+          selectedConfiguration.setTransmission(null);
+        } else {
+          selectedConfiguration.setTransmission(e.getItem().toString());
+        }
         view.setDefaultBackgroundComboBoxTransmissions();
         if (selectedConfiguration.areModelEngineTransmissionSeatsSet()) {
           Controller.this.calculatePrice();
@@ -225,8 +238,12 @@ public class Controller {
      */
     @Override
     public void itemStateChanged(ItemEvent e) {
-      if (e.getStateChange() == ItemEvent.SELECTED || e.getItem() == null) {
-        selectedConfiguration.setSeats((String) e.getItem());
+      if (e.getStateChange() == ItemEvent.SELECTED) {
+        if (e.getItem() == null) {
+          selectedConfiguration.setSeats(null);
+        } else {
+          selectedConfiguration.setSeats(e.getItem().toString());
+        }
         view.setDefaultBackgroundComboBoxSeats();
         if (selectedConfiguration.areModelEngineTransmissionSeatsSet()) {
           Controller.this.calculatePrice();
@@ -260,10 +277,10 @@ public class Controller {
       view.setDefaultBackgroundComboBoxTransmissions();
       view.setDefaultBackgroundComboBoxSeats();
 
-      selectedConfiguration.setModel("");
-      selectedConfiguration.setEngine("");
-      selectedConfiguration.setTransmission("");
-      selectedConfiguration.setSeats("");
+      selectedConfiguration.setModel(null);
+      selectedConfiguration.setEngine(null);
+      selectedConfiguration.setTransmission(null);
+      selectedConfiguration.setSeats(null);
       selectedConfiguration.setPrice(null);
     }
   }
