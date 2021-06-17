@@ -1,7 +1,9 @@
 package applicationLayer.model;
 
 /**
- * This class provides the data type
+ * This class provides the data type for the engines, transmissions and seats.
+ * In the getConfiguration method, if given a specific model, it get´s filled with engines,
+ * transmissions and seats dependent on the selected model.
  */
 
 public class SubConfigurationDTO {

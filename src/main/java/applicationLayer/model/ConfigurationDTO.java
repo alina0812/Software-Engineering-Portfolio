@@ -1,7 +1,9 @@
 package applicationLayer.model;
 
 /**
- * This class inherits from the SubConfigurationDTO class, wich contains Arrays for the different engines, transmissions and seats
+ * This class inherits from the SubConfigurationDTO class and extends it by a Array which stores the different models.
+ * In the getConfigurations method it get´s filled with all options which can be selected.
+ * When filled, its contents are the same as those from the JSON file.
  */
 
 public class ConfigurationDTO extends SubConfigurationDTO {
