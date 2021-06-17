@@ -1,5 +1,9 @@
 package dataAccessLayer.model;
 
+/**
+ * This parent-class provides a basic structure for the Subtype.
+ */
+
 public class SuperOption {
 
   private Integer model_id;

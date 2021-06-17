@@ -1,5 +1,9 @@
 package applicationLayer.model;
 
+/**
+ * This class inherits from the SubConfigurationDTO class, wich contains Arrays for the different engines, transmissions and seats
+ */
+
 public class ConfigurationDTO extends SubConfigurationDTO {
 
   private final String[] models;

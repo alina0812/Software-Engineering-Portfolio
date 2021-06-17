@@ -1,5 +1,9 @@
 package applicationLayer.model;
 
+/**
+ * This class provides the data type
+ */
+
 public class SubConfigurationDTO {
 
   private String[] engines;

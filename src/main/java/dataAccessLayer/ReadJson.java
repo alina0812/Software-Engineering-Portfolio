@@ -6,9 +6,15 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+/**
+ * This class is used to read the JSON File.
+ */
 
 public class ReadJson {
 
+  /**
+   * Method load_data reads the JSON file and maps the data in the ArrayLists of the ConfigurationDAO object
+   */
   public ConfigurationDAO load_data() throws IOException {
     File jsonInputFile = new File("Data.json");
     ObjectMapper objectMapper = new ObjectMapper();

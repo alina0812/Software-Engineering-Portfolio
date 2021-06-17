@@ -11,16 +11,41 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * This class provides Methods to
+ */
 
 public class ConfigurationService {
 
+  /**
+   * Instance of ReadJson class to read the JSON document.
+   */
   private final ReadJson readJson;
+  /**
+   * HashMap to store the SubConfigurationDTO objects for easy access later on.
+   */
   private final HashMap<String, SubConfigurationDTO> subConfigurationDTOHashMap;
+  /**
+   * HashMap to store the name as Key and the Price as Value of the models for easy access later on.
+   */
   private final HashMap<String, Integer> modelPriceHashMap;
+  /**
+   * HashMap to store the name as Key and the Price as Value of the engines for easy access later on.
+   */
   private final HashMap<String, Integer> enginePriceHashMap;
+  /**
+   * HashMap to store the name as Key and the Price as Value of the transmissions for easy access later on.
+   */
   private final HashMap<String, Integer> transmissionPriceHashMap;
+  /**
+   * HashMap to store the name as Key and the Price as Value of the seats for easy access later on.
+   */
   private final HashMap<String, Integer> seatsPriceMap;
 
+  /**
+   * Constructor initializes the HashMaps.
+   * @param readJson readJson object gets assignd to readJson attribute.
+   */
   public ConfigurationService(ReadJson readJson) {
     this.readJson = readJson;
     subConfigurationDTOHashMap = new HashMap<>();
@@ -30,6 +55,14 @@ public class ConfigurationService {
     seatsPriceMap = new HashMap<>();
   }
 
+  /**
+   * This method is invoked from the presentation Layer. It first gets the price for model, engine, transmission and seats, then returns the sum of them.
+   * @param model attribute name of the model, after which the HashMap gets searched
+   * @param engine attribute name of the engine, after which the HashMap gets searched
+   * @param transmission attribute name of the transmission, after which the HashMap gets searched
+   * @param seats attribute name of the seats, after which the HashMap gets searched
+   * @return the sum of all prices
+   */
   public int calculatePrice(String model, String engine, String transmission, String seats) {
 
     int modelPrice;
@@ -45,6 +78,14 @@ public class ConfigurationService {
     return modelPrice + enginePrice + transmissionPrice + seatsPrice;
   }
 
+  /**
+   * This method calls readJson and splits the different ArrayLists of the ConfigurationDAO object into the
+   * corresponding ArrayLists of the return object ConfigurationDTO.
+   * It also fills the HashMaps with name and price of the current object.
+   * The method only gets called once.
+   * @return a instance of ConfigurationDTO
+   * @throws IOException if the JSON file is faulty or has the wrong syntax
+   */
   public ConfigurationDTO getConfiguration() throws IOException {
 
     // Get all ConfigurationData
@@ -202,6 +243,12 @@ public class ConfigurationService {
     return config;
   }
 
+  /**
+   * This method returns a SubConfiguration object for the given model name.
+   * This indicates which SubConfigurations are compatible with the model.
+   * @param model name of the model
+   * @return SubConfiguration object
+   */
   public SubConfigurationDTO getSubConfiguration(String model) {
     return subConfigurationDTOHashMap.get(model);
   }
