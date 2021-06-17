@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * This class provides Methods to
+ * This class provides methods to calculate the price of all selected options added and to get the different configurations.
  */
 
 public class ConfigurationService {
