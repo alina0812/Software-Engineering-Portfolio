@@ -33,26 +33,68 @@ import javax.swing.plaf.basic.BasicComboPopup;
 import presentationLayer.model.AvailableConfiguration;
 import presentationLayer.model.SelectedConfiguration;
 
+/**
+ * This class is used to implement the UI of the application
+ */
 public class View extends JFrame implements Observer {
 
-  private final JLabel priceResult;
+  /**
+   * Combo box showing all selectable models
+   */
   private final JComboBox<String> comboBoxModels;
+
+  /**
+   * Combo box showing all selectable engines according to the selected model.
+   * If no model is selected, all engines are shown.
+   */
   private final JComboBox<String> comboBoxEngines;
+
+  /**
+   * Combo box showing all selectable transmissions according to the selected model.
+   * If no model is selected, all transmissions are shown.
+   */
   private final JComboBox<String> comboBoxTransmissions;
+
+  /**
+   * Combo box showing all selectable seats according to the selected model.
+   * If no model is selected, all seats are shown.
+   */
   private final JComboBox<String> comboBoxSeats;
+
+  /**
+   * Label that shows the calculated price if a model, engine, transmission and seats is selected in the combo boxes
+   */
+  private final JLabel priceResult;
+
+  /**
+   * Message box that shows input hints to the user.
+   * Messages could be: "Eine oder mehrere Optionen sind für dieses Modell nicht verfügbar. Bitte eine neue Option wählen."
+   * if the user changed a model after selecting suboptions and those suboptions are not available anymore,
+   * or "Bitte wählen Sie eine Fahrzeugkonfiguration aus" if there are still combo boxes empty
+   */
   private final JLabel messages;
+
+  /**
+   * Button that resets the view to the start configuration (selected model, engine, transmission and seats are null)
+   */
   private final JButton resetButton;
 
+  /**
+   * Constructor that instantiates the view layout
+   */
   public View() {
 
+    // panel layout
     JPanel panel = new JPanel();
     panel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
     panel.setLayout(new GridBagLayout());
     panel.setBackground(new Color(232, 226, 226, 255));
 
+    // header
     JLabel header = new JLabel("Fahrzeugkonfiguration", SwingConstants.CENTER);
     header.setFont(new Font("Avenir Next LT Pro", BOLD, 26));
 
+    // message box
     messages = new JLabel("<html>Bitte wählen Sie eine Fahrzeugkonfiguration aus<html>");
     CompoundBorder compoundBorder = BorderFactory.createCompoundBorder(new LineBorder(Color.BLACK),
         new EmptyBorder(2, 10, 2, 10));
@@ -60,9 +102,10 @@ public class View extends JFrame implements Observer {
     messages.setFont(new Font("Verdana", BOLD, 13));
     messages.setPreferredSize(new Dimension(250, 100));
 
+    // reset button
     resetButton = new JButton("reset");
 
-
+    // combo boxes
     Font fontBasic = new Font("Verdana", BOLD, 13);
     JLabel option = new JLabel("Option: ");
     option.setFont(fontBasic);
@@ -86,13 +129,14 @@ public class View extends JFrame implements Observer {
     comboBoxSeats.setPreferredSize(new Dimension(180, 25));
     comboBoxSeats.setRenderer(new MyCellRenderer());
 
+    // price result
     Font fontBig = new Font("Verdana", BOLD, 18);
     JLabel price = new JLabel("Preis: ");
     price.setFont(fontBig);
     priceResult = new JLabel();
     priceResult.setFont(fontBig);
 
-    // Colour for pop-up menu
+    // Color for pop-up menu
     Color c = new Color(129, 177, 177, 176);
     BasicComboPopup popup = (BasicComboPopup) comboBoxModels.getAccessibleContext().getAccessibleChild(0);
     popup.getList().setSelectionBackground(c);
@@ -103,6 +147,7 @@ public class View extends JFrame implements Observer {
     BasicComboPopup popup4 = (BasicComboPopup) comboBoxSeats.getAccessibleContext().getAccessibleChild(0);
     popup4.getList().setSelectionBackground(c);
 
+    // fields added to the panel via GridBagLayout
     panel.add(header, this.createGridBagConstraintsHeader());
     panel.add(messages, this.createGridBagConstraintsMessageBox());
     panel.add(resetButton, this.createGridBagConstraintsResetButton());
@@ -118,6 +163,7 @@ public class View extends JFrame implements Observer {
     panel.add(price, this.createGridBagConstraints(0, 6));
     panel.add(priceResult, this.createGridBagConstraints(1, 6));
 
+    // Frame
     this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     this.add(panel, BorderLayout.CENTER);
     this.setTitle("Fahrzeugkonfiguration");
@@ -125,6 +171,10 @@ public class View extends JFrame implements Observer {
     this.setSize(700, 450);
   }
 
+  /**
+   * Creates GridBagConstraints for the header field
+   * @return GridBagConstraints for the header
+   */
   private GridBagConstraints createGridBagConstraintsHeader() {
     GridBagConstraints c = this.createGridBagConstraints(0, 0);
     c.fill = GridBagConstraints.HORIZONTAL;
@@ -133,6 +183,12 @@ public class View extends JFrame implements Observer {
     return c;
   }
 
+  /**
+   * Creates GridBagConstraints for the combo boxes and the according labels
+   * @param gridx position at the x-axis
+   * @param gridy position at the y-axis
+   * @return GridBagConstraints for the combo box / label
+   */
   private GridBagConstraints createGridBagConstraints(int gridx, int gridy) {
     GridBagConstraints c = new GridBagConstraints();
     c.fill = GridBagConstraints.HORIZONTAL;
@@ -142,6 +198,10 @@ public class View extends JFrame implements Observer {
     return c;
   }
 
+  /**
+   * Creates a GridBagConstraint for the message box
+   * @return GridBagConstraints for the message box
+   */
   private GridBagConstraints createGridBagConstraintsMessageBox() {
     GridBagConstraints c = this.createGridBagConstraints(2, 1);
     c.fill = GridBagConstraints.HORIZONTAL;
@@ -149,64 +209,118 @@ public class View extends JFrame implements Observer {
     return c;
   }
 
+  /**
+   * Creates a GridBagConstraint for the reset button
+   * @return GridBagConstraints for the reset button
+   */
   private GridBagConstraints createGridBagConstraintsResetButton() {
     GridBagConstraints c = this.createGridBagConstraints(2, 6);
     c.fill = GridBagConstraints.HORIZONTAL;
     return c;
   }
 
+  /**
+   * Sets the price label to the calculated price or to null if not all combo boxes are set.
+   * Adds the euro sign and the thousands separator to the number
+   * @param price calculated price for the selected options in the combo boxes or null if not all combo boxes are set
+   */
   public void setPriceResult(Integer price) {
     if (price != null) {
-      char c = 8364; //Ascii code
-      String s = NumberFormat.getInstance().format(price); // Tausender-Punkt
+      char c = 8364; //Ascii code for euro
+      String s = NumberFormat.getInstance().format(price); // thousands separator
       priceResult.setText(s + " " + c);
     } else if (priceResult.getText() != null || !priceResult.getText().equals("")) {
       priceResult.setText(null);
     }
   }
 
+  /**
+   * Sets the label messages to a text
+   * @param text to be shown in the label 'messages'
+   */
   public void setMessageText(String text) {
     messages.setText(text);
   }
 
+  /**
+   * Checks if the label 'messages' is empty or not. If it is empty, it opens the possibility to set a new content into it.
+   * @return true if the content of the label 'messages' is null or empty. Else returns false.
+   */
   public boolean isMessageBoxEmpty() {
     return messages.getText() == null || messages.getText().equals("");
   }
 
+  /**
+   * Changes the background color of the combo box 'comboBoxEngines' to the default color.
+   * The background color of the combo box 'comboBoxModels' is never changed, so it picks the background color from there
+   */
   public void setDefaultBackgroundComboBoxEngines() {
-    this.comboBoxEngines.setBackground(comboBoxModels.getBackground()); //default color
+    this.comboBoxEngines.setBackground(comboBoxModels.getBackground());
   }
 
+  /**
+   * Changes the background color of the combo box 'comboBoxTransmissions' to the default color.
+   * The background color of the combo box 'comboBoxModels' is never changed, so it picks the background color from there
+   */
   public void setDefaultBackgroundComboBoxTransmissions() {
     this.comboBoxTransmissions.setBackground(comboBoxModels.getBackground()); //default color
 
   }
 
+  /**
+   * Changes the background color of the combo box 'comboBoxSeats' to the default color.
+   * The background color of the combo box 'comboBoxModels' is never changed, so it picks the background color from there
+   */
   public void setDefaultBackgroundComboBoxSeats() {
     this.comboBoxSeats.setBackground(comboBoxModels.getBackground()); //default color
   }
 
-
+  /**
+   * Adds an item listener to the combo box 'comboBoxModels'
+   * @param listenForComboBox item listener (inner class of the controller)
+   */
   public void addModelSelectionListener(ItemListener listenForComboBox) {
     comboBoxModels.addItemListener(listenForComboBox);
   }
 
+  /**
+   * Adds an item listener to the combo box 'comboBoxEngines'
+   * @param listenForComboBox item listener (inner class of the controller)
+   */
   public void addEngineSelectionListener(ItemListener listenForComboBox) {
     comboBoxEngines.addItemListener(listenForComboBox);
   }
 
-  public void addGearSelectionListener(ItemListener listenForComboBox) {
+  /**
+   * Adds an item listener to the combo box 'comboBoxTransmissions'
+   * @param listenForComboBox item listener (inner class of the controller)
+   */
+  public void addTransmissionSelectionListener(ItemListener listenForComboBox) {
     comboBoxTransmissions.addItemListener(listenForComboBox);
   }
 
+  /**
+   * Adds an item listener to the combo box 'comboBoxSeats'
+   * @param listenForComboBox item listener (inner class of the controller)
+   */
   public void addSeatsSelectionListener(ItemListener listenForComboBox) {
     comboBoxSeats.addItemListener(listenForComboBox);
   }
 
+  /**
+   * Adds an action listener to the button 'resetButton'
+   * @param actionListener action listener (inner class of the controller)
+   */
   public void addResetButtonActionListener(ActionListener actionListener) {
     resetButton.addActionListener(actionListener);
   }
 
+  /**
+   * Called if one of the models 'AvailableConfiguration' or 'SelectedConfiguration' has changed.
+   * Updates the combo boxes and the price labels accoring to the new values
+   * @param o Observable (object of the class 'AvailableConfiguration' or 'SelectedConfiguration')
+   * @param arg argument (object of the class 'AvailableConfiguration' or 'SelectedConfiguration')
+   */
   public void update(Observable o, Object arg) {
     // ComboBoxes
     if (o instanceof AvailableConfiguration) {
@@ -232,13 +346,12 @@ public class View extends JFrame implements Observer {
         for (String s : seats) {
           this.comboBoxSeats.addItem(s);
         }
+
         //Update ComboBoxes
       } else {
-
         String selectedEngine = (String) comboBoxEngines.getSelectedItem();
         String selectedTransmission = (String) comboBoxTransmissions.getSelectedItem();
         String selectedSeats = (String) comboBoxSeats.getSelectedItem();
-
 
         comboBoxEngines.removeAllItems();
         comboBoxTransmissions.removeAllItems();
@@ -291,13 +404,13 @@ public class View extends JFrame implements Observer {
           comboBoxSeats.setBackground(new Color(217, 50, 50, 163));
           this.setMessageText("<html>Eine oder mehrere gewählte Optionen sind für dieses Modell nicht verfügbar. Bitte eine neue Option wählen.<html>");
         }
-
       }
+
       // Update Price
     } else if (o instanceof SelectedConfiguration) {
       this.setPriceResult(((SelectedConfiguration) arg).getPrice());
 
-      //the following is only important for resetting
+      //the following is important for resetting
       if (!Objects.equals(comboBoxEngines.getSelectedItem(), ((SelectedConfiguration) arg).getEngine())) {
         comboBoxEngines.setSelectedItem(((SelectedConfiguration) arg).getEngine());
       }
@@ -313,6 +426,10 @@ public class View extends JFrame implements Observer {
     }
   }
 
+  /**
+   * Inner class to add a cell renderer to the combo boxes.
+   * Changes the color of the popup menu to a wished color even if the background of the combo box is not default.
+   */
   static class MyCellRenderer extends JLabel implements ListCellRenderer<Object> {
     public MyCellRenderer() {
       setOpaque(true);
@@ -328,7 +445,7 @@ public class View extends JFrame implements Observer {
         value = Character.toString(c);
       }
 
-      // background color overwrites background of comboBox
+      // background color of the popup menu overwrites background of comboBox
       setText(value.toString());
       Color background = Color.WHITE;
 

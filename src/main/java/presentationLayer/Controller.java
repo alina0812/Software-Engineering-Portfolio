@@ -13,20 +13,21 @@ import presentationLayer.model.SelectedConfiguration;
 
 /**
  * Controller of MVC pattern <br>
- * Connecting view, models and ConfigurationService
+ * Connecting view, models and ConfigurationService in the application layer
  */
 public class Controller {
 
   /**
-   * View of the application
+   * instance of the view of the application
    */
   private final View view;
   /**
-   * model AvailableConfiguration to store all available options according to the selected model in the view
+   * instance of the model `AvailableConfiguration` to store all available options
+   * according to the selected model in the view
    */
   private final AvailableConfiguration availableConfiguration;
   /**
-   * model SelectedConfiguration to save the configuration selected in the view
+   * instance of the model `SelectedConfiguration` to save the configuration selected in the view
    */
   private final SelectedConfiguration selectedConfiguration;
   /**
@@ -36,7 +37,8 @@ public class Controller {
   private final ConfigurationService configurationService;
 
   /**
-   *
+   * Instantiates the Controller, sets attributes, gets configuration data from application layer,
+   * fills model `available configuration` and sets view visible
    * @param view instance of the view (created in the static void main method)
    * @param availableConfiguration instance of the model availableConfiguration (created in the static void main method)
    * @param selectedConfiguration instance of the model selectedConfiguration (created in the static void main method)
@@ -59,21 +61,34 @@ public class Controller {
 
     this.view.addModelSelectionListener(new ModelComboBoxListener());
     this.view.addEngineSelectionListener(new EngineComboBoxListener());
-    this.view.addGearSelectionListener(new TransmissionComboBoxListener());
+    this.view.addTransmissionSelectionListener(new TransmissionComboBoxListener());
     this.view.addSeatsSelectionListener(new SeatsComboBoxListener());
     this.view.addResetButtonActionListener(new ResetButtonListener());
 
     view.setVisible(true);
   }
 
+  /**
+   * This method is inovked if the combo boxes selected items have changed through user input.
+   * Calculates the price in the application layer for the selected configuration,
+   * which is available in the model `selectedConfiguration`.
+   * Saves the calculated price in the model `selectedConfiguration`.
+   */
   private void calculatePrice() {
-
     int p = configurationService.calculatePrice(selectedConfiguration.getModel(), selectedConfiguration.getEngine(),
         selectedConfiguration.getTransmission(), selectedConfiguration.getSeats());
     selectedConfiguration.setPrice(p);
 
   }
 
+  /**
+   * Invoked after the selected model in the according comboBox in the view has changed. <br>
+   * Gets suboption data for the selected model via the application layer <br>
+   * If the previously selected configuration data (selected engine, transmission and/or seats) is not part of the new
+   * configuration data, the according option in the model `SelectedConfiguration` is set to null
+   * Updates then the model `AvailableConfiguration` with the new suboptions <br>
+   * @param model model Selected model in the according combo box in the view
+   */
   private void updateComboBoxes(String model) {
     SubConfigurationDTO subConfigurationDTO = configurationService.getSubConfiguration(model);
     // update selected options if they are not available anymore
@@ -99,10 +114,20 @@ public class Controller {
         subConfigurationDTO.getTransmissions(), subConfigurationDTO.getSeats());
   }
 
-  // ItemListener for all ComboBoxes
-
+  /**
+   * Item listener for the combo box `comboBoxModels` in the view
+   */
   class ModelComboBoxListener implements ItemListener {
 
+    /**
+     * Invoked if the selected item of the `modelComboBox` in the view has changed. <br>
+     * Sets the attribute `model` in the model `SelectedConfiguration` to the selected option. <br>
+     * Calls then the method `updateComboBoxes` to update the `AvailableConfiguration` data
+     * with suboption for the selected model <br>
+     * If all configuration data in `selectedConfiguration` is set, the price for the configuration is going to be calculated.
+     * Else the price is `null` and the user is called to select configurations
+     * @param e Selected item of the combo box `comboBoxModels` in the view
+     */
     public void itemStateChanged(ItemEvent e) {
       if (e.getStateChange() == ItemEvent.SELECTED) {
         selectedConfiguration.setModel((String) e.getItem());
@@ -122,8 +147,18 @@ public class Controller {
     }
   }
 
+  /**
+   * Item listener for the combo box `comboBoxEngines` in the view
+   */
   class EngineComboBoxListener implements ItemListener {
 
+    /**
+     * Invoked if the selected item of the `engineComboBox` in the view has changed. <br>
+     * Sets the attribute `engine` in the model `SelectedConfiguration` to the selected option. <br>
+     * If all configuration data in `selectedConfiguration` is set, the price for the configuration is going to be calculated.
+     * Else the price is `null` and the user is called to select configurations
+     * @param e selected item of the combo box `comboBoxEngines` in the view
+     */
     @Override
     public void itemStateChanged(ItemEvent e) {
       if (e.getStateChange() == ItemEvent.SELECTED) {
@@ -144,8 +179,18 @@ public class Controller {
     }
   }
 
+  /**
+   * Item listener for the combo box `comboBoxTransmissions` in the view
+   */
   class TransmissionComboBoxListener implements ItemListener {
 
+    /**
+     * Invoked if the selected item of the `transmissionComboBox` in the view has changed. <br>
+     * Sets the attribute `transmission` in the model `SelectedConfiguration` to the selected option. <br>
+     * If all configuration data in `selectedConfiguration` is set, the price for the configuration is going to be calculated.
+     * Else the price is `null` and the user is called to select configurations
+     * @param e selected item in the combo box `comboBoxTransmissions` in the view
+     */
     @Override
     public void itemStateChanged(ItemEvent e) {
       if (e.getStateChange() == ItemEvent.SELECTED) {
@@ -166,8 +211,18 @@ public class Controller {
     }
   }
 
+  /**
+   * Item listener for the combo box `comboBoxSeats` in the view
+   */
   class SeatsComboBoxListener implements ItemListener {
 
+    /**
+     * Invoked if the selected item of the `seatsComboBox` in the view has changed. <br>
+     * Sets the attribute `seats` in the model `SelectedConfiguration` to the selected option. <br>
+     * If all configuration data in `selectedConfiguration` is set, the price for the configuration is going to be calculated.
+     * Else the price is `null` and the user is called to select configurations
+     * @param e selected item in the combo box `comboBoxSeats`
+     */
     @Override
     public void itemStateChanged(ItemEvent e) {
       if (e.getStateChange() == ItemEvent.SELECTED || e.getItem() == null) {
@@ -188,8 +243,16 @@ public class Controller {
     }
   }
 
+  /**
+   * Action listener for the button `resetButton` in the view
+   */
   class ResetButtonListener implements ActionListener {
 
+    /**
+     * Invoked it the button `resetButton` in the view is clicked.
+     * Resets the options in the model `selectedConfiguration` to default values so that all combo boxes in the view are empty
+     * @param e Button clicked
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
       view.setMessageText("<html>Bitte wählen Sie eine Fahrzeugkonfiguration aus<html>");
