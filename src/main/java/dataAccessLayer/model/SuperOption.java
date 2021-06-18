@@ -1,7 +1,7 @@
 package dataAccessLayer.model;
 
 /**
- * This parent-class provides a basic structure for the Subtype.
+ * This parent-class provides a basic structure for the Subtype. The Data for the models get´s saved here.
  */
 
 public class SuperOption {
