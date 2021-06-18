@@ -491,11 +491,13 @@ public class View extends JFrame implements Observer {
     public Component getListCellRendererComponent(JList<?> list, Object value, int index,
                                                   boolean isSelected, boolean cellHasFocus) {
 
-      if (value != null) {
-        setText(value.toString());
-      } else {
-        setText(null);
+      if (value == null || value.toString() == null) {
+        char c = 0;                 // if value of StringWrapper is 'null', the value is changed to an invisible sign
+        value = Character.toString(c);
       }
+
+      setText(value.toString());
+
       Color background = Color.WHITE;
 
       JList.DropLocation dropLocation = list.getDropLocation();
