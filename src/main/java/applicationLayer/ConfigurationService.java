@@ -16,29 +16,33 @@ import java.util.List;
  * selected options added. The method getConfiguration provides data for a specific model, the method calculatePrice
  * calculates the price for the currently selected configuration.
  */
-
 public class ConfigurationService {
 
   /**
    * Instance of ReadJson class to read the JSON document.
    */
   private final ReadJson readJson;
+
   /**
    * HashMap to store the SubConfigurationDTO objects for easy access later on.
    */
   private final HashMap<String, SubConfigurationDTO> subConfigurationDTOHashMap;
+
   /**
    * HashMap to store the name as Key and the Price as Value of the models for easy access later on.
    */
   private final HashMap<String, Integer> modelPriceHashMap;
+
   /**
    * HashMap to store the name as Key and the Price as Value of the engines for easy access later on.
    */
   private final HashMap<String, Integer> enginePriceHashMap;
+
   /**
    * HashMap to store the name as Key and the Price as Value of the transmissions for easy access later on.
    */
   private final HashMap<String, Integer> transmissionPriceHashMap;
+
   /**
    * HashMap to store the name as Key and the Price as Value of the seats for easy access later on.
    */
@@ -67,15 +71,10 @@ public class ConfigurationService {
    */
   public int calculatePrice(String model, String engine, String transmission, String seats) {
 
-    int modelPrice;
-    int enginePrice;
-    int transmissionPrice;
-    int seatsPrice;
-
-    modelPrice = modelPriceHashMap.get(model);
-    enginePrice = enginePriceHashMap.get(engine);
-    transmissionPrice = transmissionPriceHashMap.get(transmission);
-    seatsPrice = seatsPriceMap.get(seats);
+    int modelPrice = modelPriceHashMap.get(model);
+    int enginePrice = enginePriceHashMap.get(engine);
+    int transmissionPrice = transmissionPriceHashMap.get(transmission);
+    int seatsPrice = seatsPriceMap.get(seats);
 
     return modelPrice + enginePrice + transmissionPrice + seatsPrice;
   }
@@ -178,8 +177,6 @@ public class ConfigurationService {
 
 
     //fill SubConfiguration-HashMap for easier access to subconfigurations
-    subConfigurationDTOHashMap.put("", new SubConfigurationDTO(config.getEngines(),
-        config.getTransmissions(), config.getSeats()));
     subConfigurationDTOHashMap.put(null, new SubConfigurationDTO(config.getEngines(),
         config.getTransmissions(), config.getSeats()));
 

@@ -13,7 +13,9 @@ import java.io.IOException;
 public class ReadJson {
 
   /**
-   * Method load_data reads the JSON file and maps the data in the ArrayLists of the ConfigurationDAO object
+   * Method reads the JSON file and maps the data into the ConfigurationDAO object
+   * @return ConfigurationDAO object containing all configuration data
+   * @throws IOException if JSON file is in a wrong syntax
    */
   public ConfigurationDAO load_data() throws IOException {
     File jsonInputFile = new File("Data.json");

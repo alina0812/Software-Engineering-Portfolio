@@ -14,7 +14,7 @@ public class Main {
 
   /**
    * Starting point of the application.
-   * Creates all necessary classes in this method to ensure that there are only one instance of each class (mixture of dependency injection and singleton)
+   * Creates all necessary classes to ensure that there are only one instance of each class (mixture of dependency injection and singleton)
    * @param args arguments to the public static void main method
    * @throws IOException if the JSON file is not found or in a wrong syntax
    */

@@ -5,16 +5,23 @@ package applicationLayer.model;
  * In the getConfiguration method, if given a specific model, it get´s filled with engines,
  * transmissions and seats dependent on the selected model.
  */
-
 public class SubConfigurationDTO {
 
   /**
-   * The String Arrays engines, transmissions and seats contain the names of the engines, transmissions and seats
+   * The String Array engines contains the names of the engines configured by the getConfiguration method.
+   */
+  private final String[] engines;
+
+  /**
+   * The String Array transmissions and seats contains the names of the transmissions
    * configured by the getConfiguration method.
    */
-  private String[] engines;
-  private String[] transmissions;
-  private String[] seats;
+  private final String[] transmissions;
+
+  /**
+   * The String Array seats contains the names of the seats configured by the getConfiguration method
+   */
+  private final String[] seats;
 
   /**
    * Constructor method assigns the inputs to the Arrays.
@@ -28,14 +35,26 @@ public class SubConfigurationDTO {
     this.seats = seats;
   }
 
+  /**
+   * returns engines
+   * @return String array 'engines'
+   */
   public String[] getEngines() {
     return engines;
   }
 
+  /**
+   * returns transmissions
+   * @return String array 'transmissions'
+   */
   public String[] getTransmissions() {
     return transmissions;
   }
 
+  /**
+   * returns seats
+   * @return String array 'seats'
+   */
   public String[] getSeats() {
     return seats;
   }

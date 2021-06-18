@@ -5,7 +5,6 @@ package applicationLayer.model;
  * In the getConfigurations method it get´s filled with all options which can be selected.
  * When filled, its contents are the same as those from the JSON file.
  */
-
 public class ConfigurationDTO extends SubConfigurationDTO {
 
   /**
@@ -25,6 +24,10 @@ public class ConfigurationDTO extends SubConfigurationDTO {
     this.models = models;
   }
 
+  /**
+   * Getter to get attribute models
+   * @return String array with all models
+   */
   public String[] getModels() {
     return models;
   }

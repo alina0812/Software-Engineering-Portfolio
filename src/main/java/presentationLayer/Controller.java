@@ -272,10 +272,12 @@ public class Controller {
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-      view.setMessageText("<html>Bitte wählen Sie eine Fahrzeugkonfiguration aus<html>");
       view.setDefaultBackgroundComboBoxEngines();
       view.setDefaultBackgroundComboBoxTransmissions();
       view.setDefaultBackgroundComboBoxSeats();
+
+      Controller.this.updateComboBoxes(null);
+      view.setMessageText("<html>Bitte wählen Sie eine Fahrzeugkonfiguration aus<html>");
 
       selectedConfiguration.setModel(null);
       selectedConfiguration.setEngine(null);
