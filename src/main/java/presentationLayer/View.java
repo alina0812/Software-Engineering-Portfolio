@@ -92,7 +92,7 @@ public class View extends JFrame implements Observer {
 
     // header
     JLabel header = new JLabel("Fahrzeugkonfiguration", SwingConstants.CENTER);
-    header.setFont(new Font("Avenir Next LT Pro", BOLD, 26));
+    header.setFont(new Font("Segoe UI Black", Font.PLAIN, 26));
 
     // message box
     messages = new JLabel("<html>Bitte wählen Sie eine Fahrzeugkonfiguration aus<html>");
