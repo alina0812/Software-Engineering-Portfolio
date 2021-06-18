@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * This class provides methods to get configuration data from the data layer and calculating the price of all
  * selected options added. The method getConfiguration provides data for a specific model, the method calculatePrice
- * calculates the price for the selected configuration.
+ * calculates the price for the currently selected configuration.
  */
 
 public class ConfigurationService {

@@ -17,10 +17,10 @@ public class SubConfigurationDTO {
   private String[] seats;
 
   /**
-   * Constructor method assigns the inputs to the Arrays
-   * @param engines String Array, filled with the names of the engines
-   * @param transmissions String Array, filled with the names of the transmissions
-   * @param seats String Array, filled with the names of the seats
+   * Constructor method assigns the inputs to the Arrays.
+   * @param engines String Array, filled with the names of the engines.
+   * @param transmissions String Array, filled with the names of the transmissions.
+   * @param seats String Array, filled with the names of the seats.
    */
   public SubConfigurationDTO(String[] engines, String[] transmissions, String[] seats) {
     this.engines = engines;
